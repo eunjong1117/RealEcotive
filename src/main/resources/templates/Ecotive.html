@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Ecotive</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0 auto;
+        font-family: "Winky Sans", sans-serif;
+      }
+
+      header {
+        background-color: rgb(92, 183, 133);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+      }
+
+      #home {
+        font-size: xx-large;
+        font-weight: 400;
+        color: rgb(250, 244, 227);
+        display: flex;
+        align-items: center;
+      }
+
+      .sub_menu ul {
+        list-style: none;
+        display: flex;
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: 100vh;
+        background-color: rgb(92, 183, 133);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.3s ease;
+        z-index: 1000;
+      }
+
+      .sub_menu ul li {
+        color: rgb(250, 244, 227);
+        cursor: pointer;
+        padding: 8px 25px;
+        margin-right: 20px;
+        margin-left: 20px;
+        font-size: larger;
+      }
+
+      .sub_menu ul li:hover {
+        background-color: rgb(250, 244, 227);
+        color: rgb(92, 183, 133);
+        border-radius: 30px;
+      }
+
+      #logout {
+        background-color: rgb(250, 244, 227);
+        color: rgb(92, 183, 133);
+        border-radius: 30px;
+        padding: 8px 17px;
+      }
+      #logout:hover {
+        background-color: rgb(250, 244, 227);
+        font-weight: 550;
+      }
+      .menu_icon {
+        font-size: 30px;
+        cursor: pointer;
+        color: rgb(250, 244, 227);
+        display: none;
+      }
+
+      .close_btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 35px;
+        cursor: pointer;
+        color: rgb(250, 244, 227);
+      }
+
+      /* 반응형 */
+      @media screen and (max-width: 768px) {
+        #menu {
+          background-color: rgb(84, 168, 122);
+        }
+        .menu_icon {
+          display: block;
+        }
+        .sub_menu ul li {
+          margin: 15px 0;
+        }
+      }
+      @media screen and (min-width: 769px) {
+        .sub_menu ul {
+          position: static;
+          flex-direction: row;
+          height: auto;
+          background: none;
+          width: auto;
+        }
+        .close_btn {
+          display: none;
+        }
+      }
+      section {
+        display: flex;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+      @media screen and (min-width: 769px) {
+        section {
+          width: 80%;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <a href="#" style="text-decoration-line: none">
+        <div id="home">
+          <span>Ecotive</span>
+          <img
+            src="image/새싹지구.png"
+            width="22"
+            height="30"
+            style="margin: 7px"
+          />
+        </div>
+      </a>
+
+      <nav class="sub_menu">
+        <div class="menu_icon" onclick="openMenu()">☰</div>
+        <ul id="menu">
+          <div class="close_btn" onclick="closeMenu()">&times;</div>
+          <li>Mission</li>
+          <li>Community</li>
+          <li>Shop</li>
+          <li>My_Page</li>
+          <li id="logout">Logout</li>
+        </ul>
+      </nav>
+    </header>
+    <section>
+      <img
+        src="image/배너.png"
+        width="100%;"
+        height="auto;"
+        style="max-width: 768px; transition: all 0.3s ease"
+      />
+    </section>
+
+    <script>
+      function openMenu() {
+        const menu = document.getElementById("menu");
+        menu.style.right = "0px";
+      }
+      function closeMenu() {
+        const menu = document.getElementById("menu");
+        menu.style.right = "-250px";
+      }
+      window.addEventListener("resize", function () {
+        const menu = document.getElementById("menu");
+        if (window.innerWidth > 768) {
+          menu.style.right = "0";
+        } else {
+          menu.style.right = "-250px";
+        }
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        const menu = document.getElementById("menu");
+        if (window.innerWidth > 768) {
+          menu.style.right = "0";
+        } else {
+          menu.style.right = "-250px";
+        }
+      });
+    </script>
+  </body>
+</html>
