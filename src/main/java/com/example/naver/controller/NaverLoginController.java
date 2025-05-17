@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -19,20 +20,25 @@ public class NaverLoginController {
 
     @GetMapping("/")
     public String home() {
-        return "Login"; // Login.html을 반환
+        return "login"; // Login.html을 반환 -> localhost:8080 첫 화면
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login"; // Login.html을 반환 -> localhost:8080 첫 화면
     }
 
     @GetMapping("/naver/callback")
-    public String naverLoginCallback(@RequestParam Map<String, String> callbackParams, Model model) {
-        // 네이버 로그인 서비스를 통해 사용자 프로필 정보를 가져옴
-        NaverLoginProfile naverLoginProfile = naverLoginService.processNaverLogin(callbackParams);
+    public String naverLoginCallback(@RequestParam Map<String, String> callbackParams,
+                                     HttpServletRequest request,  // ✅ 추가!
+                                     Model model) {
+        // ✅ request도 같이 넘겨줘야 함
+        NaverLoginProfile naverLoginProfile = naverLoginService.processNaverLogin(callbackParams, request);
 
-        // 가져온 프로필 정보를 모델에 추가
         model.addAttribute("naverProfile", naverLoginProfile);
-
-        // 최종적으로 보여줄 화면 (예: 지도 페이지)
-        return "Login";
+        return "ecotive";
     }
+
 
     // 마지막으로 저장된 네이버 프로필 정보를 반환하는 API 엔드포인트
     @GetMapping("/naver/last-profile")
