@@ -155,7 +155,9 @@
           <li>Community</li>
           <li>Shop</li>
           <li>My_Page</li>
-          <li id="logout">Logout</li>
+          <a href="/logout" style="text-decoration-line: none">
+            <li id="logout">Logout</li>
+          </a>
         </ul>
       </nav>
     </header>
@@ -167,32 +169,6 @@
         style="max-width: 768px; transition: all 0.3s ease"
       />
     </section>
-
-    <script>
-      function openMenu() {
-        const menu = document.getElementById("menu");
-        menu.style.right = "0px";
-      }
-      function closeMenu() {
-        const menu = document.getElementById("menu");
-        menu.style.right = "-250px";
-      }
-      window.addEventListener("resize", function () {
-        const menu = document.getElementById("menu");
-        if (window.innerWidth > 768) {
-          menu.style.right = "0";
-        } else {
-          menu.style.right = "-250px";
-        }
-      });
-      document.addEventListener("DOMContentLoaded", function () {
-        const menu = document.getElementById("menu");
-        if (window.innerWidth > 768) {
-          menu.style.right = "0";
-        } else {
-          menu.style.right = "-250px";
-        }
-      });
-    </script>
+  <script src="../static/js/Ecotive.js"></script>
   </body>
 </html>

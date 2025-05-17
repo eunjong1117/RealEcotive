@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +35,15 @@ public class NaverLoginService {
     private String clientSecret;
 
     @Transactional
-    public NaverLoginProfile processNaverLogin(Map<String, String> callbackParams) {
+    public NaverLoginProfile processNaverLogin(Map<String, String> callbackParams, HttpServletRequest request)
+    {
         NaverLoginVo naverLoginVo = requestNaverLoginAccessToken(callbackParams);
+
+        // ✅ accessToken 세션에 저장
+        String accessToken = naverLoginVo.getAccess_token();
+        HttpSession session = request.getSession();
+        session.setAttribute("accessToken", accessToken);
+
         NaverLoginProfile naverLoginProfile = requestAndSaveNaverLoginProfile(naverLoginVo);
         // 여기서 이메일을 사용하여 SellerInformation 작성
         createSellerInformation(naverLoginProfile);
