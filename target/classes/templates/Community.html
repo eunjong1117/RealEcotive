@@ -20,8 +20,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15p
-            x 20px;
+            padding: 15px 20px;
         }
 
         #home {
@@ -106,60 +105,51 @@
 </head>
 
 <body>
-    <header>
-        <a href="#" style="text-decoration-line: none;">
-            <div id="home">
-                <span>Ecotive</span>
-                <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px;">
-            </div>
-        </a>
+<header>
+    <a href="#" style="text-decoration-line: none;">
+        <div id="home">
+            <span>Ecotive</span>
+            <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px;">
+        </div>
+    </a>
 
-        <nav class="sub_menu">
-            <div class="menu_icon" onclick="openMenu()">☰</div>
-            <ul id="menu">
-                <div class="close_btn" onclick="closeMenu()">&times;</div>
-                <li>Mission</li>
-                <li>Community</li>
-                <li>Q&A</li>
-                <li>My_page</li>
-                <li>Login</li>
-            </ul>
-        </nav>
-    </header>
-
-
-
-
-
-
-
-
-
-    <script>
-        function openMenu() {
-            const menu = document.getElementById("menu");
-            menu.style.right = "0px"; 
+    <nav class="sub_menu">
+        <div class="menu_icon" onclick="openMenu()">☰</div>
+        <ul id="menu">
+            <div class="close_btn" onclick="closeMenu()">&times;</div>
+            <li>Mission</li>
+            <li>Community</li>
+            <li>Shop</li>
+            <li>My_page</li>
+            <li>Logout</li>
+        </ul>
+    </nav>
+</header>
+<script>
+    function openMenu() {
+        const menu = document.getElementById("menu");
+        menu.style.right = "0px";
+    }
+    function closeMenu() {
+        const menu = document.getElementById("menu");
+        menu.style.right = "-250px";
+    }
+    window.addEventListener("resize", function () {
+        const menu = document.getElementById("menu");
+        if (window.innerWidth > 768) {
+            menu.style.right = "0";
+        } else {
+            menu.style.right = "-250px";
         }
-        function closeMenu() {
-            const menu = document.getElementById("menu");
-            menu.style.right = "-250px";  
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const menu = document.getElementById("menu");
+        if (window.innerWidth > 768) {
+            menu.style.right = "0";
+        } else {
+            menu.style.right = "-250px";
         }
-        window.addEventListener("resize", function () {
-            const menu = document.getElementById("menu");
-            if (window.innerWidth > 768) {
-                menu.style.right = "0"; 
-            } else {
-                menu.style.right = "-250px"; 
-            }
-        });
-        document.addEventListener("DOMContentLoaded", function () {
-            const menu = document.getElementById("menu");
-            if (window.innerWidth > 768) {
-                menu.style.right = "0";
-            } else {
-                menu.style.right = "-250px";
-            }
-        });
-    </script>
+    });
+</script>
 </body>
 </html>

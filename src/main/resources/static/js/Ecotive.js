@@ -23,3 +23,4 @@
           menu.style.right = "-250px";
         }
       });
+

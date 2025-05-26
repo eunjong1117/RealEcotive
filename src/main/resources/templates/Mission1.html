@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>환경 미션 페이지</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+  font-family: 'Pretendard', sans-serif;
+  background-color: #e0e0e0;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.mission-box {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 30px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mission-box h2 {
+  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #397362;
+}
+
+.mission-content {
+  background-color: #cfe3d8;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  color: #3c4d47;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+   justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.buttons button {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 14px;
+  background-color: #3c6661;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+  background-color: #2e524f;
+}
+
+.difficulty-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.difficulty-buttons button {
+  padding: 8px 16px;
+  font-size: 13px;
+  background-color: #639c8f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.difficulty-buttons button:hover:enabled {
+  background-color: #3c6661;
+}
+
+.difficulty-buttons button:disabled {
+  background-color: #c8dbd5;
+  cursor: not-allowed;
+}
+
+.custom-swal-popup {
+  height: 100px; /* 원하는 높이 */
+  overflow-y: auto; /* 내용이 길어지면 스크롤 */
+}
+
+.custom-swal-popup {
+  height: 400px; /* 예: 200px로 설정 */
+  overflow-y: auto;
+}
+
+  </style>
+</head>
+<body>
+<div class="mission-box">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2 style="margin: 0; color: #397362;">오늘의 환경 미션은</h2>
+    <button id="showMissionStatus" style="
+      background-color: #639c8f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
+    ">미션 목록</button>
+  </div>
+  <div class="mission-content" id="missionText">난이도를 선택해주세요!</div>
+
+  <div class="difficulty-buttons" id="difficultyButtons">
+    <button onclick="confirmDifficulty('상')">상</button>
+    <button onclick="confirmDifficulty('중')">중</button>
+    <button onclick="confirmDifficulty('하')">하</button>
+  </div>
+
+  <div class="buttons">
+    <button onclick="toggleUploadForm()">미션 인증</button>
+  </div>
+
+  <form id="uploadForm" style="display: none; margin-top: 20px;" enctype="multipart/form-data">
+    <input type="file" id="photoInput" accept="image/*" required><br><br>
+    <textarea id="missionTextInput" rows="4" placeholder="미션 내용을 입력하세요" required
+              style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;"></textarea><br><br>
+    <img id="preview" src="" alt="미리보기" style="max-width: 100%; max-height: 200px; display: none; margin-bottom: 10px;"><br>
+    <button type="submit" style="background-color:#00796b; color:white; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">업로드</button>
+  </form>
+</div>
+<script src="../static/js/Mission1.js"></script>
+</body>
+</html>
