@@ -130,6 +130,15 @@
           margin: 0 auto;
         }
       }
+      .Item_list {
+            text-decoration: none;
+            color: rgb(250, 244, 227);
+
+        }
+
+        .Item_list:hover{
+            color: rgb(92, 183, 133);
+        }
     </style>
   </head>
 
@@ -151,10 +160,10 @@
         <div class="menu_icon" onclick="openMenu()">☰</div>
         <ul id="menu">
           <div class="close_btn" onclick="closeMenu()">&times;</div>
-          <li>Mission</li>
-          <li>Community</li>
-          <li>Shop</li>
-          <li>My_Page</li>
+          <li><a class="Item_list" href="/Mission" >Mission</a></li>
+          <li><a class="Item_list" href="/Community">Community</a></li>
+          <li><a class="Item_list" href="/Shop">Shop</a></li>
+          <li><a class="Item_list" href="/My_Page" >My_Page</a></li>
           <a href="/logout" style="text-decoration-line: none">
             <li id="logout">Logout</li>
           </a>
