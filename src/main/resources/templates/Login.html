@@ -1,45 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap"
-      rel="stylesheet"
-    />
-    <title>Main</title>
-    <style>
-      * {
-        margin: 0 auto;
-      }
-      body {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        background-color: rgb(92, 183, 133);
-        color: white;
-        font-family: "Winky Sans", sans-serif;
-      }
-      .block {
-        display: inline-block;
-      }
-    </style>
-  </head>
-  <body>
-    <div>
-      <h1 class="block">Ecotive</h1>
-      <img src="../static/images/sprout-earth.png" width="20px" height="30px" class="ablock" />
-      <h4>환경 보호 플랫폼</h4>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ecotive — Hero Style</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet"/>
+  <style>
+    /* 전역 리셋 */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; width:100%; font-family:'Jua', sans-serif; }
 
-      <div>환경 미션 수행하고 함께 나무 심으러 가요!</div>
-    </div>
+    /* 그라데이션 배경 + 중앙 정렬 */
+    body {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background: linear-gradient(135deg, #FFFFEA 0%, #CEE3D8 100%);
+      overflow-x:hidden;
+    }
 
-    <a href="#" onclick="showLoginPopup()">
-      <img src="../static/images/naverlogin.png" width="200px" height="50px" />
-    </a>
-  <script src="../static/js/Login.js"></script>
-  </body>
+    /* 카드 박스 */
+    #content {
+      background: rgba(255,255,255,0.9);
+      border-radius:1.5rem;
+      padding:2rem 3rem;
+      box-shadow:0 8px 24px rgba(0,0,0,0.12);
+      text-align:center;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:1.5rem;
+
+      width:90%;
+      max-width:360px; /* 데스크탑 기준 */
+    }
+
+    /* 로고 애니메이션 */
+    @keyframes float {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(-10px); }
+    }
+    #content .logo {
+      width:180px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* 타이포그래피 */
+    h1 {
+      font-size:3rem;
+      color:#4C8675;
+      line-height:1;
+    }
+    h4 {
+      font-size:1.5rem;
+      color:#5C827C;
+      line-height:1.2;
+    }
+
+    /* 버튼 스타일 */
+    .login-btn img {
+      display:block;
+      width:100%;
+      max-width:320px;
+      height:auto;
+      border-radius:0.75rem;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      transition:transform .2s, box-shadow .2s;
+      cursor:pointer;
+    }
+    .login-btn img:hover {
+      transform:translateY(-3px) scale(1.02);
+      box-shadow:0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    /* iPad 등 태블릿 대응 (768px~1024px) */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      #content {
+        max-width: 480px;      /* 카드 넓이 확장 */
+        padding: 3rem 4rem;    /* 패딩 확대 */
+        gap: 2rem;
+      }
+      #content .logo {
+        width: 220px;          /* 로고 확대 */
+      }
+      h1 {
+        font-size: 3.5rem;     /* 제목 확대 */
+      }
+      h4 {
+        font-size: 1.75rem;    /* 부제목 확대 */
+      }
+      .login-btn img {
+        max-width: 360px;      /* 버튼 좀 더 크게 */
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="content">
+  <img src="../static/images/earth.png" alt="지구 로고" class="logo" />
+  <h1>Ecotive</h1>
+  <h4>환경 보호 플랫폼</h4>
+  <a href="#" class="login-btn" onclick="showLoginPopup()">
+    <img src="../static/images/naverLogin.png" alt="네이버 로그인" />
+  </a>
+</div>
+
+<script src="../static/js/Login.js"></script>
+</body>
 </html>
