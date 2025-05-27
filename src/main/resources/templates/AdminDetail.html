@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>미션 상세보기</title>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+          font-family: 'Jua', sans-serif;
+          background-color: #f9f9f9;
+          padding: 30px;
+          max-width: 700px;
+          margin: auto;
+        }
+
+        .card {
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+          border: 1px solid #ddd;
+        }
+
+        .card img {
+          width: 100%;
+          border-radius: 10px;
+          margin-bottom: 15px;
+        }
+
+        .info {
+          margin-bottom: 15px;
+          font-size: 15px;
+          color: #444;
+        }
+
+        .content {
+          margin-bottom: 20px;
+          font-size: 17px;
+        }
+
+        .btn-group {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 8px;
+          font-weight: bold;
+          cursor: pointer;
+          font-family: "Winky Sans", sans-serif;
+          font-size: 15px;
+          transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .approve {
+          background-color: #5cb785;
+          color: white;
+        }
+
+        .approve:hover {
+          background-color: #4aa472;
+          transform: scale(1.05);
+        }
+
+        .reject {
+          background-color: #ccc;
+          color: black;
+        }
+
+        .reject:hover {
+          background-color: #bbb;
+          transform: scale(1.05);
+        }
+
+        .custom-swal-popup {
+          font-family: 'Jua', sans-serif !important;
+          border-radius: 12px;
+          color: #3c4d47;
+          background-color: #cfe3d8;
+        }
+
+        .custom-swal-button {
+          font-family: 'Jua', sans-serif !important;
+          background-color: #5cb785 !important;
+          color: white !important;
+          border-radius: 6px !important;
+        }
+
+        .custom-swal-title {
+          font-family: 'Jua', sans-serif !important;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="info">회원 이메일: user2@example.com | 등록일: 2025-05-27 | 난이도: 상</div>
+    <img src="../static/images/아픈%20나무.png" alt="미션 사진" style="width: 100%; max-height: 400px;" />
+    <div class="content">플라스틱 10개 수거했습니다!</div>
+    <div class="btn-group">
+        <button class="approve" onclick="approve()">승인</button>
+        <button class="reject" onclick="reject()">거절</button>
+    </div>
+</div>
+
+<script>
+    function approve() {
+      Swal.fire({
+        icon: 'success',
+        title: '승인되었습니다!',
+        confirmButtonColor: '#5cb785',
+        background: 'white',
+        customClass: {
+          popup: 'custom-swal-popup',
+          title: 'custom-swal-title',
+          confirmButton: 'custom-swal-button'
+        }
+      });
+    }
+
+    function reject() {
+      Swal.fire({
+        title: '거절 사유를 입력해주세요:',
+        input: 'text',
+        inputPlaceholder: '예: 사진이 불명확합니다',
+        showCancelButton: true,
+        confirmButtonText: '거절',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#888',
+        background: 'white',
+        customClass: {
+          popup: 'custom-swal-popup',
+          title: 'custom-swal-title',
+          confirmButton: 'custom-swal-button'
+        }
+      }).then((result) => {
+        if (result.isConfirmed && result.value) {
+          Swal.fire({
+            icon: 'error',
+            title: '거절되었습니다',
+            text: `사유: ${result.value}`,
+            confirmButtonColor: '#5cb785',
+            background: 'white',
+            customClass: {
+              popup: 'custom-swal-popup',
+              title: 'custom-swal-title',
+              confirmButton: 'custom-swal-button'
+            }
+          });
+        }
+      });
+    }
+</script>
+</body>
+</html>
