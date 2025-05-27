@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecotive - 환경 미션</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-    <title>Ecotive</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         * {
           margin: 0;
@@ -15,6 +18,7 @@
         body {
           margin: 0 auto;
           font-family: "Jua", sans-serif;
+          background-color: #e0e0e0;
         }
 
         header {
@@ -90,7 +94,6 @@
           color: rgb(250, 244, 227);
         }
 
-        /* 반응형 */
         @media screen and (max-width: 768px) {
           #menu {
             background-color: rgb(84, 168, 122);
@@ -102,6 +105,7 @@
             margin: 15px 0;
           }
         }
+
         @media screen and (min-width: 769px) {
           .sub_menu ul {
             position: static;
@@ -114,16 +118,109 @@
             display: none;
           }
         }
+
+        .Item_list {
+          text-decoration: none;
+          color: rgb(250, 244, 227);
+        }
+
+        .Item_list:hover {
+          color: rgb(92, 183, 133);
+        }
+
         section {
           display: flex;
           justify-content: center;
-          box-sizing: border-box;
+          align-items: center;
+          min-height: 80vh;
+          padding: 40px 0;
         }
-        @media screen and (min-width: 769px) {
-          section {
-            width: 80%;
-            margin: 0 auto;
-          }
+
+        .mission-box {
+          background-color: #ffffff;
+          border-radius: 16px;
+          padding: 40px;
+          width: 520px;
+          text-align: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-box h2 {
+          margin-bottom: 30px;
+          font-size: 22px;
+          font-weight: 600;
+          color: #397362;
+        }
+
+        .mission-content {
+          background-color: #cfe3d8;
+          border-radius: 10px;
+          padding: 25px;
+          margin-bottom: 30px;
+          color: #3c4d47;
+          font-size: 16px;
+          font-weight: 500;
+          min-height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .buttons {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+        }
+
+        .buttons button {
+          flex: 1;
+          padding: 14px 0;
+          font-size: 15px;
+          background-color: #3c6661;
+          color: white;
+          font-weight: 600;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        .buttons button:hover {
+          background-color: #2e524f;
+        }
+
+        .difficulty-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 12px;
+          margin-bottom: 25px;
+        }
+
+        .difficulty-buttons button {
+          padding: 10px 20px;
+          font-size: 14px;
+          background-color: #639c8f;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          font-weight: 500;
+        }
+
+        .difficulty-buttons button:hover:enabled {
+          background-color: #3c6661;
+        }
+
+        .difficulty-buttons button:disabled {
+          background-color: #c8dbd5;
+          cursor: not-allowed;
+        }
+
+        .custom-swal-popup {
+          background-color: #cfe3d8 !important;
+          color: #3c4d47;
+          border-radius: 12px;
         }
     </style>
 </head>
@@ -132,97 +229,54 @@
     <a href="#" style="text-decoration-line: none">
         <div id="home">
             <span>Ecotive</span>
-            <img
-                    src="../static/images/sprout-earth.png"
-                    width="22"
-                    height="30"
-                    style="margin: 7px"
-            />
+            <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px" />
         </div>
     </a>
-
-<<<<<<< Updated upstream
-        <nav class="sub_menu">
-            <div class="menu_icon" onclick="openMenu()">☰</div>
-            <ul id="menu">
-                <div class="close_btn" onclick="closeMenu()">&times;</div>
-                <li>Mission</li>
-                <li>Community</li>
-                <li>Shop</li>
-                <li>My_page</li>
-                <li>Logout</li>
-            </ul>
-        </nav>
-    </header>
-    <script>
-        function openMenu() {
-            const menu = document.getElementById("menu");
-            menu.style.right = "0px"; 
-        }
-        function closeMenu() {
-            const menu = document.getElementById("menu");
-            menu.style.right = "-250px";  
-        }
-        window.addEventListener("resize", function () {
-            const menu = document.getElementById("menu");
-            if (window.innerWidth > 768) {
-                menu.style.right = "0"; 
-            } else {
-                menu.style.right = "-250px"; 
-            }
-        });
-        document.addEventListener("DOMContentLoaded", function () {
-            const menu = document.getElementById("menu");
-            if (window.innerWidth > 768) {
-                menu.style.right = "0";
-            } else {
-                menu.style.right = "-250px";
-            }
-        });
-    </script>
-=======
     <nav class="sub_menu">
         <div class="menu_icon" onclick="openMenu()">☰</div>
         <ul id="menu">
             <div class="close_btn" onclick="closeMenu()">&times;</div>
-            <li>Mission</li>
-            <li>Community</li>
-            <li>Shop</li>
-            <li>My_Page</li>
-            <li id="logout">Logout</li>
+            <li><a class="Item_list" href="/Mission">Mission</a></li>
+            <li><a class="Item_list" href="/Community">Community</a></li>
+            <li><a class="Item_list" href="/Shop">Shop</a></li>
+            <li><a class="Item_list" href="/My_Page">My_Page</a></li>
+            <a href="/logout" style="text-decoration-line: none">
+                <li id="logout">Logout</li>
+            </a>
         </ul>
     </nav>
 </header>
 <section>
-
+    <div class="mission-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin: 0; color: #397362;">오늘의 환경 미션은</h2>
+            <button id="showMissionStatus" style="background-color: #639c8f; color: white; border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: 600; font-size: 13px; transition: background-color 0.3s ease;">미션 목록</button>
+        </div>
+        <div class="mission-content" id="missionText">난이도를 선택해주세요!</div>
+        <div class="difficulty-buttons" id="difficultyButtons">
+            <button onclick="confirmDifficulty('상')">상</button>
+            <button onclick="confirmDifficulty('중')">중</button>
+            <button onclick="confirmDifficulty('하')">하</button>
+        </div>
+        <div class="buttons">
+            <button onclick="toggleUploadForm()">미션 인증</button>
+        </div>
+        <form id="uploadForm" style="display: none; margin-top: 20px;" enctype="multipart/form-data">
+            <input type="file" id="photoInput" accept="image/*" required><br><br>
+            <textarea id="missionTextInput" rows="4" placeholder="미션 내용을 입력하세요" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;"></textarea><br><br>
+            <img id="preview" src="" alt="미리보기" style="max-width: 100%; max-height: 200px; display: none; margin-bottom: 10px;"><br>
+            <button type="submit" style="background-color:#00796b; color:white; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">업로드</button>
+        </form>
+    </div>
 </section>
-
 <script>
     function openMenu() {
-      const menu = document.getElementById("menu");
-      menu.style.right = "0px";
+      document.getElementById("menu").style.right = "0px";
     }
     function closeMenu() {
-      const menu = document.getElementById("menu");
-      menu.style.right = "-250px";
+      document.getElementById("menu").style.right = "-250px";
     }
-    window.addEventListener("resize", function () {
-      const menu = document.getElementById("menu");
-      if (window.innerWidth > 768) {
-        menu.style.right = "0";
-      } else {
-        menu.style.right = "-250px";
-      }
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-      const menu = document.getElementById("menu");
-      if (window.innerWidth > 768) {
-        menu.style.right = "0";
-      } else {
-        menu.style.right = "-250px";
-      }
-    });
 </script>
->>>>>>> Stashed changes
+<script src="../static/js/Mission1.js"></script>
 </body>
 </html>

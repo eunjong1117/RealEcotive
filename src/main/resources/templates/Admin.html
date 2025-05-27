@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecotive - 관리자 페이지</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet"
+    />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          margin: 0 auto;
+          font-family: "Winky Sans", sans-serif;
+          background-color: #f9f9f9;
+        }
+        header {
+          background-color: rgb(92, 183, 133);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 20px;
+        }
+        #home {
+          font-size: xx-large;
+          font-weight: 400;
+          color: rgb(250, 244, 227);
+          display: flex;
+          align-items: center;
+        }
+        .sub_menu ul {
+          list-style: none;
+          display: flex;
+          position: fixed;
+          top: 0;
+          right: -250px;
+          width: 250px;
+          height: 100vh;
+          background-color: rgb(92, 183, 133);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: right 0.3s ease;
+          z-index: 1000;
+        }
+        .sub_menu ul li {
+          color: rgb(250, 244, 227);
+          cursor: pointer;
+          padding: 8px 25px;
+          margin: 0 20px;
+          font-size: larger;
+        }
+        .sub_menu ul li:hover {
+          background-color: rgb(250, 244, 227);
+          color: rgb(92, 183, 133);
+          border-radius: 30px;
+        }
+        #logout {
+          background-color: rgb(250, 244, 227);
+          color: rgb(92, 183, 133);
+          border-radius: 30px;
+          padding: 8px 17px;
+        }
+        #logout:hover {
+          background-color: rgb(250, 244, 227);
+          font-weight: 550;
+        }
+        .menu_icon {
+          font-size: 30px;
+          cursor: pointer;
+          color: rgb(250, 244, 227);
+          display: none;
+        }
+        .close_btn {
+          position: absolute;
+          top: 15px;
+          right: 20px;
+          font-size: 35px;
+          cursor: pointer;
+          color: rgb(250, 244, 227);
+        }
+        @media screen and (max-width: 768px) {
+          #menu { background-color: rgb(84, 168, 122); }
+          .menu_icon { display: block; }
+          .sub_menu ul li { margin: 15px 0; }
+        }
+        @media screen and (min-width: 769px) {
+          .sub_menu ul {
+            position: static;
+            flex-direction: row;
+            height: auto;
+            background: none;
+            width: auto;
+          }
+          .close_btn { display: none; }
+        }
+        .Item_list {
+          text-decoration: none;
+          color: rgb(250, 244, 227);
+        }
+        .Item_list:hover {
+          color: rgb(92, 183, 133);
+        }
+        .main-wrapper {
+          display: flex;
+          flex-direction: row;
+          padding: 20px;
+        }
+        .left-panel { width: 60%; margin-right: 20px; }
+        .right-panel { width: 40%; }
+        h1 {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          background: white;
+        }
+        th, td {
+          padding: 12px;
+          border-bottom: 1px solid #ddd;
+          text-align: center;
+        }
+        th {
+          background-color: #5cb785;
+          color: white;
+        }
+        tr:hover {
+          background-color: #f1f1f1;
+          cursor: pointer;
+        }
+        .calendar {
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .calendar-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+        .calendar-selectors {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+        .calendar-header button {
+          background-color: #5cb785;
+          color: white;
+          border: none;
+          padding: 6px 10px;
+          cursor: pointer;
+          border-radius: 4px;
+        }
+        .calendar-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 4px;
+        }
+        .calendar-cell {
+          text-align: center;
+          padding: 10px 0;
+          cursor: pointer;
+          border-radius: 6px;
+        }
+        .calendar-cell:hover { background-color: #e0f4eb; }
+        .today {
+          background-color: #5cb785;
+          color: white;
+        }
+        .day-names {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        #datePicker {
+          display: none;
+          position: fixed;
+          top: 30%;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #f9f9f9;
+          padding: 24px;
+          border-radius: 12px;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+          z-index: 11;
+          text-align: center;
+          border: 1px solid #ddd;
+          animation: fadeIn 0.3s ease;
+        }
+
+        #datePicker select {
+          padding: 8px 12px;
+          font-size: 14px;
+          margin: 6px;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          background-color: white;
+          color: #333;
+          transition: background-color 0.2s ease, outline 0.2s ease;
+        }
+
+        #datePicker select:hover {
+
+        }
+
+        #datePicker select:focus {
+          outline: 2px solid #5cb785;
+        }
+
+        #datePicker button {
+          margin-top: 12px;
+          padding: 8px 16px;
+          background-color: #5cb785;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: bold;
+          font-size: 14px;
+          transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        #datePicker button:hover {
+          background-color: #4aa472;
+          transform: scale(1.05);
+        }
+
+        #datePicker button:focus {
+          outline: 2px solid #4aa472;
+        }
+
+        .calendar-cell.selected {
+          background-color: #c6ecd9;     /* 부드러운 연두색 배경 */
+          font-weight: bold;             /* 텍스트 강조 */
+          border: 2px solid #5cb785;     /* 진한 연두색 테두리 */
+        }
+
+        #overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(0, 0, 0, 0.4);
+          z-index: 10;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+          }
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <a href="#" style="text-decoration-line: none">
+        <div id="home">
+            <span>Ecotive</span>
+            <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px" />
+        </div>
+    </a>
+    <nav class="sub_menu">
+        <div class="menu_icon" onclick="openMenu()">☰</div>
+        <ul id="menu">
+            <div class="close_btn" onclick="closeMenu()">&times;</div>
+            <li><a class="Item_list" href="/Mission">Mission</a></li>
+            <li><a class="Item_list" href="/Community">Community</a></li>
+            <li><a class="Item_list" href="/Shop">Shop</a></li>
+            <li><a class="Item_list" href="/My_Page">My_Page</a></li>
+            <a href="/logout" style="text-decoration-line: none">
+                <li id="logout">Logout</li>
+            </a>
+        </ul>
+    </nav>
+</header>
+
+<div class="main-wrapper">
+    <div class="left-panel">
+        <h1>미션 인증 요청 목록</h1>
+        <table id="missionTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>회원 이메일</th>
+                <th>날짜</th>
+                <th>난이도</th>
+                <th>글</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="right-panel">
+        <div class="calendar">
+            <div class="calendar-header">
+                <button onclick="prevMonth()">◀</button>
+                <div class="calendar-selectors">
+                    <div id="yearDisplay" onclick="showDatePicker()"></div>
+                    <div id="monthDisplay" onclick="showDatePicker()"></div>
+                </div>
+                <button onclick="nextMonth()">▶</button>
+            </div>
+            <div class="calendar-grid day-names">
+                <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+            </div>
+            <div class="calendar-grid" id="calendarDays"></div>
+        </div>
+    </div>
+</div>
+<div id="overlay" onclick="hideOverlay()"></div>
+<div id="datePicker">
+    <select id="pickerYear"></select>
+    <select id="pickerMonth"></select>
+    <br />
+    <button onclick="applyDatePick()">적용</button>
+</div>
+
+
+<script>
+    const missionData = [
+      { id: 101, email: 'user1@example.com', date: '2025-05-26', level: '중', summary: '텀블러 인증했어요!' },
+      { id: 102, email: 'user2@example.com', date: '2025-05-27', level: '상', summary: '플라스틱 10개 수거했습니다!' },
+      { id: 103, email: 'user3@example.com', date: '2025-06-01', level: '하', summary: '일회용 컵 줄이기!' },
+    ];
+
+    const tableBody = document.querySelector('#missionTable tbody');
+    let selectedDate = null;
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    function renderTable(filteredDate = null) {
+      tableBody.innerHTML = '';
+      const data = filteredDate
+        ? missionData.filter(m => m.date === filteredDate)
+        : missionData;
+
+      data.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${m.id}</td>
+          <td>${m.email}</td>
+          <td>${m.date}</td>
+          <td>${m.level}</td>
+          <td>${m.summary}</td>
+        `;
+        tr.onclick = () => {
+          window.location.href = `/admin/mission/${m.id}`;
+        };
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function renderCalendar(month, year) {
+      const calendarDays = document.getElementById('calendarDays');
+      calendarDays.innerHTML = '';
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const todayStr = today.toISOString().split('T')[0];
+
+      for (let i = 0; i < firstDay; i++) {
+        calendarDays.innerHTML += `<div></div>`;
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const cell = document.createElement('div');
+        cell.textContent = d;
+        cell.className = 'calendar-cell';
+        if (dateStr === todayStr) cell.classList.add('today');
+        if (dateStr === selectedDate) cell.classList.add('selected');
+        cell.addEventListener('click', () => {
+        selectedDate = dateStr;
+        renderTable(dateStr);
+        renderCalendar(month, year);
+      });
+      calendarDays.appendChild(cell);
+    }
+
+      document.getElementById('yearDisplay').textContent = `${year}년`;
+      document.getElementById('monthDisplay').textContent = `${month + 1}월`;
+    }
+
+    function prevMonth() {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    function nextMonth() {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    function showDatePicker() {
+      const pickerYear = document.getElementById('pickerYear');
+      const pickerMonth = document.getElementById('pickerMonth');
+      pickerYear.innerHTML = '';
+      pickerMonth.innerHTML = '';
+
+      for (let y = 2020; y <= 2030; y++) {
+        const option = document.createElement('option');
+        option.value = y;
+        option.textContent = y + '년';
+        if (y === currentYear) option.selected = true;
+        pickerYear.appendChild(option);
+      }
+
+      for (let m = 0; m < 12; m++) {
+        const option = document.createElement('option');
+        option.value = m;
+        option.textContent = (m + 1) + '월';
+        if (m === currentMonth) option.selected = true;
+        pickerMonth.appendChild(option);
+      }
+
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('datePicker').style.display = 'block';
+    }
+
+    function applyDatePick() {
+      currentYear = parseInt(document.getElementById('pickerYear').value);
+      currentMonth = parseInt(document.getElementById('pickerMonth').value);
+      hideOverlay();
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    function hideOverlay() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('datePicker').style.display = 'none';
+    }
+
+    function openMenu() {
+      document.getElementById("menu").style.right = "0px";
+    }
+
+    function closeMenu() {
+      document.getElementById("menu").style.right = "-250px";
+    }
+
+    window.addEventListener("resize", function () {
+      const menu = document.getElementById("menu");
+      menu.style.right = window.innerWidth > 768 ? "0" : "-250px";
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const menu = document.getElementById("menu");
+      menu.style.right = window.innerWidth > 768 ? "0" : "-250px";
+
+      renderTable();
+      renderCalendar(currentMonth, currentYear);
+    });
+</script>
+</body>
+</html>
