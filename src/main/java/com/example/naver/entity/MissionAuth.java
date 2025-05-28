@@ -4,6 +4,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
+// Entity의 역할
+// "DB 테이블과 1:1로 매핑되는 객체"
+// Spring Data JPA에서 DB와 CRUD 작업을 할 때 사용해
+// 예: missionAuthRepository.save(entity) 이런 식으로 DB에 저장하거나 꺼낼 때
+// 저장, 수정, 삭제, 조회 전용
 @Entity
 @Getter
 @Setter

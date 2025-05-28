@@ -43,6 +43,7 @@ public class NaverLoginController {
     }
 
 
+
     // 마지막으로 저장된 네이버 프로필 정보를 반환하는 API 엔드포인트
     @GetMapping("/naver/last-profile")
     public ResponseEntity<NaverLoginProfile> getLastNaverProfile() {
