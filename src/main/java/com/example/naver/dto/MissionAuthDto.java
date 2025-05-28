@@ -4,6 +4,10 @@ import com.example.naver.entity.MissionAuth;
 import lombok.Getter;
 import lombok.Setter;
 
+// DTO(Data Transfer Object)의 역할, 프론트에 넘겨줄 데이터 형식
+// "데이터를 안전하고 효율적으로 전달하기 위한 객체"
+// 클라이언트 ↔ 서버 사이, 혹은 서버 내부에서 데이터를 전달할 때 사용해.
+//
 @Getter
 public class MissionAuthDto {
     private Long id;
