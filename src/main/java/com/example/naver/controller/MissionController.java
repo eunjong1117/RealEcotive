@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MissionController {
 
-    @GetMapping("/Mission")
+    @GetMapping("/MissionInfo")
     public String MissionPage() {
         return "Mission";
     }
+
+
 }

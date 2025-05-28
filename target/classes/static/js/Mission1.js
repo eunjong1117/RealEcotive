@@ -40,7 +40,7 @@ const missions = {
         title: '난이도 선택 필요!',
         text: '먼저 난이도를 선택해주세요!',
         confirmButtonColor: '#397362',
-        background: '#cfe3d8',
+        background: 'white',
         color: '#3c4d47',
       });
       return;
@@ -65,10 +65,20 @@ const missions = {
 
   document.getElementById('uploadForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    alert('미션 인증이 업로드 되었습니다.\n관리자의 승인을 기다려주세요!');
+
+    Swal.fire({
+      icon: 'success',
+      title: '업로드 완료!',
+      text: '미션 인증이 업로드 되었습니다.\n관리자의 승인을 기다려주세요!',
+      confirmButtonColor: '#397362',
+      background: 'white',
+      color: '#3c4d47',
+    });
+
     this.reset();
     document.getElementById('preview').style.display = 'none';
   });
+
 
      // ✅ 미션 현황 버튼 클릭 이벤트
     document.getElementById('showMissionStatus').addEventListener('click', () => {
