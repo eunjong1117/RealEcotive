@@ -34,9 +34,12 @@ public class NaverLoginController {
                                      Model model) {
         // ✅ request도 같이 넘겨줘야 함
         NaverLoginProfile naverLoginProfile = naverLoginService.processNaverLogin(callbackParams, request);
-
         model.addAttribute("naverProfile", naverLoginProfile);
-        return "ecotive";
+
+        if("whdvkf5139@naver.com".equals(naverLoginProfile.getEmail())){
+            return "AdminPage";
+        }
+        return "Ecotive";
     }
 
 
