@@ -37,9 +37,9 @@ public class NaverLoginController {
         model.addAttribute("naverProfile", naverLoginProfile);
 
         if("whdvkf5139@naver.com".equals(naverLoginProfile.getEmail())){
-            return "AdminPage";
+            return "redirect:/AdminPage";
         }
-        return "Ecotive";
+        return "redirect:/Ecotive";
     }
 
 
