@@ -34,5 +34,7 @@ public class MissionAuth {
 
     private String imagePath;      // 저장된 이미지 경로 (ex. /files/uuid.jpg)
 
+    private String filePath;
+
     private LocalDateTime createdAt;  // 인증 등록 시각
 }
