@@ -96,10 +96,30 @@
         .custom-swal-title {
           font-family: 'Jua', sans-serif !important;
         }
+
+        .close_btn {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    font-size: 35px;
+    cursor: pointer;
+    color: black;
+  }
+
+        .card {
+  position: relative;
+  /* 기존 스타일 유지 */
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+}
     </style>
 </head>
 <body>
 <div class="card">
+    <div class="close_btn" onclick="location.href='/Admin'">&times;</div>
     <div class="info">
         회원 이메일: <span th:text="${mission.email}"></span> |
         등록일: <span th:text="${#temporals.format(mission.createdAt, 'yyyy-MM-dd')}"></span> |

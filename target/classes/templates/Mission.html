@@ -229,7 +229,7 @@
     <a href="/Ecotive" style="text-decoration-line: none">
         <div id="home">
             <span>Ecotive</span>
-            <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px"/>
+            <img src="/images/sprout-earth.png" width="22" height="30" style="margin: 7px"/>
         </div>
     </a>
     <nav class="sub_menu">
@@ -259,7 +259,12 @@
             <button onclick="confirmDifficulty('하')">하</button>
         </div>
         <div class="buttons">
-            <button onclick="toggleUploadForm()">미션 인증</button>
+            <th:block th:if="${!uploaded}">
+                <button onclick="toggleUploadForm()">미션 인증</button>
+            </th:block>
+            <th:block th:if="${uploaded}">
+                <button onclick="editUploadForm()">수정하기</button>
+            </th:block>
         </div>
         <form id="uploadForm" action="/api/mission/auth" method="post" enctype="multipart/form-data" style="display: none; margin-top: 20px;">
             <input type="file" id="photoInput" name="photo" accept="image/*" required><br><br>
@@ -273,6 +278,9 @@
                 업로드
             </button>
         </form>
+        <div id="uploadStatus" style="display:none; color: #397362; font-size: 13px; margin-top: 10px;">
+            관리자 승인 대기중입니다.
+        </div>
 
     </div>
 </section>
@@ -349,6 +357,26 @@
     }
   });
 
+
+  let isEditing = false; // ✅ 수정 상태 전역 변수
+
+  function editUploadForm() {
+    isEditing = true; // ✅ 수정 상태로 변경
+    const form = document.getElementById('uploadForm');
+    form.style.display = 'block';
+
+    const content = /*[[${content}]]*/ '';
+    const level = /*[[${level}]]*/ '';
+    const imagePath = /*[['${imagePath}']]*/ '';
+
+    document.getElementById('missionTextInput').value = content;
+    document.getElementById('levelHidden').value = level;
+
+    const preview = document.getElementById('preview');
+    preview.src = imagePath;
+    preview.style.display = 'block';
+  }
+
   document.getElementById('uploadForm').addEventListener('submit', function (e) {
   e.preventDefault(); // 기본 제출 막기
 
@@ -392,6 +420,17 @@
       });
   });
 
+    function editUploadForm() {
+        const form = document.getElementById('uploadForm');
+        form.style.display = 'block';
+
+        // 기존 미션 내용 세팅
+        document.getElementById('missionTextInput').value = /*[[${content}]]*/ '';
+        document.getElementById('levelHidden').value = /*[[${level}]]*/ '';
+        document.getElementById('preview').src = /*[['/files/' + ${imagePath}]]*/ '';
+        document.getElementById('preview').style.display = 'block';
+    }
+
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -406,7 +445,43 @@
             color: '#3c4d47'
         });
     }
+
+    const uploaded = /*[[${uploaded}]]*/ false;
+
+  if (uploaded) {
+    // 난이도 버튼 비활성화
+    const buttons = document.querySelectorAll('.difficulty-buttons button');
+    buttons.forEach(btn => btn.disabled = true);
+
+    // 승인 대기 메시지 표시
+    const form = document.getElementById('uploadForm');
+    const status = document.createElement('p');
+    status.textContent = '✅ 관리자 승인 대기중입니다.';
+    status.style.color = '#3c4d47';
+    status.style.fontSize = '14px';
+    status.style.marginTop = '15px';
+    form.parentNode.insertBefore(status, form.nextSibling);
+  }
     /*]]>*/
+
+    function editUploadForm() {
+        const form = document.getElementById('uploadForm');
+        form.style.display = 'block';
+
+        // 서버에서 Thymeleaf로 전달된 값들을 자바스크립트 변수에 담기
+        const content = /*[[${content}]]*/ '';
+        const level = /*[[${level}]]*/ '';
+        const imagePath = /*[['${imagePath}']]*/ '';
+
+        // 텍스트와 숨은 난이도 값 채우기
+        document.getElementById('missionTextInput').value = content;
+        document.getElementById('levelHidden').value = level;
+
+        // 이미지 미리보기 설정
+        const preview = document.getElementById('preview');
+        preview.src = imagePath;
+        preview.style.display = 'block';
+    }
 </script>
 
 

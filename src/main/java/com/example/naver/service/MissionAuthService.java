@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -63,6 +64,21 @@ public class MissionAuthService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 미션이 존재하지 않습니다."));
         mission.setApproved(true);
         missionAuthRepository.save(mission);
+    }
+
+    public boolean hasUploadedToday(String email) {
+        LocalDate today = LocalDate.now();
+        return missionAuthRepository.existsByEmailAndCreatedAtBetween(
+                email,
+                today.atStartOfDay(),
+                today.plusDays(1).atStartOfDay()
+        );
+    }
+
+    public boolean isApproved(String email) {
+        return missionAuthRepository.findTopByEmailOrderByCreatedAtDesc(email)
+                .map(MissionAuth::isApproved)
+                .orElse(false);
     }
 
 

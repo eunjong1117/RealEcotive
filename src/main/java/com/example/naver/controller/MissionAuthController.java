@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,25 +31,35 @@ public class MissionAuthController {
     public String uploadMission(@RequestParam("level") String level,
                                 @RequestParam("content") String content,
                                 @RequestParam("photo") MultipartFile file,
-                                HttpServletRequest request) {
-
-        System.out.println("🚀 미션 업로드 요청 도착"); // ✅ 이 줄 추가
+                                HttpSession session,
+                                Model model) {
 
         try {
-            String email = naverLoginService.getLastNaverProfile().getEmail();
-            System.out.println("✅ 이메일: " + email);
+            // ✅ 이메일 얻기: 세션 or 로그인 서비스
+            String email = (String) session.getAttribute("email");
+            if (email == null) {
+                email = naverLoginService.getLastNaverProfile().getEmail();
+            }
+
+            System.out.println("✅ email: " + email);
             System.out.println("✅ level: " + level);
             System.out.println("✅ content: " + content);
-            System.out.println("✅ 파일 이름: " + file.getOriginalFilename());
+            System.out.println("✅ filename: " + file.getOriginalFilename());
 
+            // ✅ 미션 저장
             missionAuthService.saveMission(email, level, content, file);
 
-            return "redirect:/Mission";
+            model.addAttribute("uploaded", true);
+            model.addAttribute("approved", false);
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/Mission?error";
+            model.addAttribute("error", "업로드 실패: " + e.getMessage());
         }
+
+        return "Mission"; // 또는 redirect:/Mission (원하는 동작에 따라)
     }
+
     // MissionController.java
 
     @GetMapping("/api/admin/mission-list")
