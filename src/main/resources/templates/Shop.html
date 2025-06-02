@@ -101,11 +101,20 @@
             display: none;
         }
     }
+
+    .Item_list {
+          text-decoration: none;
+          color: rgb(250, 244, 227);
+        }
+
+        .Item_list:hover {
+          color: rgb(92, 183, 133);
+        }
   </style>
 </head>
 <body>
 <header>
-  <a href="#" style="text-decoration-line: none;">
+  <a href="/Ecotive" style="text-decoration-line: none;">
     <div id="home">
       <span>Ecotive</span>
       <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px;">
@@ -116,11 +125,13 @@
     <div class="menu_icon" onclick="openMenu()">☰</div>
     <ul id="menu">
       <div class="close_btn" onclick="closeMenu()">&times;</div>
-      <li>Mission</li>
-      <li>Community</li>
-      <li>Shop</li>
-      <li>My_page</li>
-      <li>Logout</li>
+      <li><a class="Item_list" href="/MissionInfo">Mission</a></li>
+      <li><a class="Item_list" href="/Community">Community</a></li>
+      <li><a class="Item_list" href="/Shop">Shop</a></li>
+      <li><a class="Item_list" href="/My_Page">My_Page</a></li>
+      <a href="/logout" style="text-decoration-line: none">
+        <li id="logout">Logout</li>
+      </a>
     </ul>
   </nav>
 </header>
