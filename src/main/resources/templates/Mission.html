@@ -226,10 +226,10 @@
 </head>
 <body>
 <header>
-    <a href="/Ecotive" style="text-decoration-line: none">
+    <a href="#" style="text-decoration-line: none">
         <div id="home">
             <span>Ecotive</span>
-            <img src="/images/sprout-earth.png" width="22" height="30" style="margin: 7px"/>
+            <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px" />
         </div>
     </a>
     <nav class="sub_menu">
@@ -252,237 +252,331 @@
             <h2 style="margin: 0; color: #397362;">오늘의 환경 미션은</h2>
             <button id="showMissionStatus" style="background-color: #639c8f; color: white; border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: 600; font-size: 13px; transition: background-color 0.3s ease;">미션 목록</button>
         </div>
-        <div class="mission-content" id="missionText">난이도를 선택해주세요!</div>
+        <!-- 미션 주제 영역 -->
+        <div class="mission-content" id="missionText"
+             th:text="${assignedMission != null ? assignedMission : '미션 주제를 선택하세요!'}">
+            미션 주제를 선택하세요!
+        </div>
+
+
+
         <div class="difficulty-buttons" id="difficultyButtons">
             <button onclick="confirmDifficulty('상')">상</button>
             <button onclick="confirmDifficulty('중')">중</button>
             <button onclick="confirmDifficulty('하')">하</button>
         </div>
+
+        <!-- 버튼 -->
         <div class="buttons">
-            <th:block th:if="${!uploaded}">
-                <button onclick="toggleUploadForm()">미션 인증</button>
-            </th:block>
-            <th:block th:if="${uploaded}">
-                <button onclick="editUploadForm()">수정하기</button>
-            </th:block>
+            <button id="missionActionBtn" onclick="toggleUploadForm()" th:text="${uploaded} ? '인증 수정' : '미션 인증'">미션 인증</button>
         </div>
+
+        <!-- 승인 대기 메시지 -->
+        <div id="approvalMessage" th:if="${uploaded}" style="margin-top:10px; color:#397362; font-weight:bold; font-size:14px;">
+            관리자의 승인을 기다려주세요!
+        </div>
+
         <form id="uploadForm" action="/api/mission/auth" method="post" enctype="multipart/form-data" style="display: none; margin-top: 20px;">
             <input type="file" id="photoInput" name="photo" accept="image/*" required><br><br>
-            <textarea id="missionTextInput" name="content" rows="4" placeholder="미션 내용을 입력하세요" required
-                      style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;"></textarea><br><br>
-            <input type="hidden" name="level" id="levelHidden" value="">
-            <img id="preview" src="" alt="미리보기"
-                 style="max-width: 100%; max-height: 200px; display: none; margin-bottom: 10px;"><br>
+            <!-- 미션 내용 입력란 -->
+            <textarea id="missionTextInput" name="content" rows="4" placeholder="내용을 입력하세요" required
+                      style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+            </textarea></textarea><br><br>
+            <input type="hidden" name="level" id="levelHidden" th:value="${level}">
+            <input type="hidden" name="assignedMission" id="selectedMissionHidden">
+            <img id="preview" alt="미리보기"
+                 style="max-width: 100%; max-height: 200px; display: none; margin-bottom: 10px;" /><br>
             <button type="submit"
                     style="background-color:#00796b; color:white; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">
                 업로드
             </button>
         </form>
-        <div id="uploadStatus" style="display:none; color: #397362; font-size: 13px; margin-top: 10px;">
-            관리자 승인 대기중입니다.
-        </div>
 
     </div>
 </section>
 <script>
+    let selectedDifficulty = null;
+    let selectedMissionContent = ''; // 선택된 미션 내용
+    let userInputContent = ''; // 사용자가 입력한 내용
+
     function openMenu() {
-      document.getElementById("menu").style.right = "0px";
+        document.getElementById("menu").style.right = "0px";
     }
+
     function closeMenu() {
-      document.getElementById("menu").style.right = "-250px";
+        document.getElementById("menu").style.right = "-250px";
     }
+
     const missions = {
-    '상': ['플라스틱 1주일 안 쓰기', '대중교통만 이용하기', '3일간 쓰레기 안 버리기 챌린지'],
-    '중': ['텀블러 사용하기', '일회용품 줄이기', '장바구니 사용하기'],
-    '하': ['불 끄기', '양치컵 사용하기', '재활용 분리수거 하기']
-  };
+        '상': ['플라스틱 1주일 안 쓰기', '대중교통만 이용하기', '3일간 쓰레기 안 버리기 챌린지'],
+        '중': ['텀블러 사용하기', '일회용품 줄이기', '장바구니 사용하기'],
+        '하': ['불 끄기', '양치컵 사용하기', '재활용 분리수거 하기']
+    };
 
-  let selectedDifficulty = null;
-  let selectedMissions = []; // ✅ 사용자가 선택한 미션 목록
-
-  function confirmDifficulty(level) {
+    function confirmDifficulty(level) {
     Swal.fire({
-      title: `난이도 ${level} 등급을 선택하시겠습니까?`,
-      text: "한 번 선택하면 다시 바꿀 수 없습니다.",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#397362',
-      cancelButtonColor: '#c8dbd5',
-      confirmButtonText: '선택하기',
-      cancelButtonText: '취소'
+        title: `난이도 ${level} 등급을 선택하시겠습니까?`,
+        text: "한 번 선택하면 다시 바꿀 수 없습니다.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#397362',
+        cancelButtonColor: '#c8dbd5',
+        confirmButtonText: '선택하기',
+        cancelButtonText: '취소'
     }).then((result) => {
-      if (result.isConfirmed) {
-        selectedDifficulty = level;
-        const randomMission = missions[level][Math.floor(Math.random() * missions[level].length)];
-        document.getElementById('missionText').innerText = `[${level} 등급] ${randomMission}`;
+        if (result.isConfirmed) {
+            selectedDifficulty = level;
+            const randomMission = missions[level][Math.floor(Math.random() * missions[level].length)];
+            selectedMissionContent = `[${level} 등급] ${randomMission}`; // 선택된 미션 내용
+            console.log(selectedMissionContent);
 
-        // ✅ 선택된 미션 저장
-        selectedMissions.push(randomMission);
+            // 미션 내용은 미션칸에만 표시
+            document.getElementById('missionText').innerText = selectedMissionContent || '미션 주제를 선택하세요!';
+            console.log(selectedMissionContent);
 
-        // 버튼 비활성화
-        const buttons = document.querySelectorAll('.difficulty-buttons button');
-        buttons.forEach(btn => btn.disabled = true);
-        document.getElementById('levelHidden').value = level;
-      }
+            // 선택된 미션은 로컬스토리지에 저장
+            localStorage.setItem('selectedMission', selectedMissionContent);
+            let storedMission = localStorage.getItem('selectedMission');
+            console.log(storedMission);
+
+            // 난이도 버튼 비활성화
+            const buttons = document.querySelectorAll('.difficulty-buttons button');
+            buttons.forEach(btn => btn.disabled = true);
+
+            // 미션 내용 및 난이도 hidden 필드에 설정
+            document.getElementById('selectedMissionHidden').value = storedMission;
+            document.getElementById('levelHidden').value = level;
+
+            // 미션 내용 입력란은 덮어쓰지 않음
+            document.getElementById('missionTextInput').value = userInputContent || '';
+
+        }
     });
-  }
+}
 
-  function toggleUploadForm() {
-    if (!selectedDifficulty) {
-      Swal.fire({
-        icon: 'warning',
-        title: '난이도 선택 필요!',
-        text: '먼저 난이도를 선택해주세요!',
+    function toggleUploadForm() {
+        if (!selectedDifficulty) {
+            Swal.fire({
+                icon: 'warning',
+                title: '난이도 선택 필요!',
+                text: '먼저 난이도를 선택해주세요!',
+                confirmButtonColor: '#397362',
+                background: 'white',
+                color: '#3c4d47',
+            });
+            return;
+        }
+
+        const form = document.getElementById('uploadForm');
+        const missionActionBtn = document.getElementById('missionActionBtn');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+
+        // 업로드 후 수정하기 버튼으로 변경
+        if (missionActionBtn.innerText === '미션 인증') {
+            missionActionBtn.innerText = '수정하기';  // '수정하기'로 변경
+        } else {
+            missionActionBtn.innerText = '미션 인증';  // 원래대로 돌아감
+        }
+
+        // 미션 내용 입력을 빈 값으로 초기화 (사용자가 미션을 수정할 수 있도록)
+        if (missionActionBtn.innerText === '수정하기') {
+            document.getElementById('missionTextInput').value = userInputContent; // 기존 내용 그대로
+            document.getElementById('preview').style.display = 'none'; // 이미지 미리보기 초기화
+        }
+    }
+
+    // 사용자가 입력한 내용을 저장
+   document.getElementById('missionTextInput').addEventListener('input', function () {
+        userInputContent = this.value; // 사용자가 입력한 내용을 저장
+    });
+
+    document.getElementById('photoInput').addEventListener('change', function () {
+        const file = this.files[0];  // 선택한 첫 번째 파일
+    if (file) {
+        const reader = new FileReader();  // 파일을 읽기 위한 객체
+
+        // 파일이 읽혔을 때 실행되는 이벤트
+        reader.onload = function (e) {
+            const preview = document.getElementById('preview'); // 미리보기 이미지 요소
+            preview.src = e.target.result;  // 읽은 파일을 미리보기 이미지로 설정
+            preview.style.display = 'block';  // 미리보기 이미지를 보이게 설정
+        };
+
+        // 선택한 파일을 Data URL로 읽기
+        reader.readAsDataURL(file);
+    }
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+    e.preventDefault();  // 기본 제출 막기
+
+    const form = this;
+    const missionContent = userInputContent; // 사용자가 입력한 내용
+
+    // 미션 내용이 빈 값이면 오류 처리
+    if (!missionContent) {
+        Swal.fire({
+            icon: 'error',
+            title: '미션 내용이 비어 있습니다!',
+            text: '미션 내용을 작성해주세요.',
+            confirmButtonColor: '#397362',
+            background: 'white',
+            color: '#3c4d47',
+        });
+        return;
+    }
+
+    // 서버로 전송하기 전에 내용 확인
+    Swal.fire({
+        icon: 'success',
+        title: '업로드 완료!',
+        text: '미션 인증이 업로드 되었습니다. 관리자의 승인을 기다려주세요!',
         confirmButtonColor: '#397362',
         background: 'white',
         color: '#3c4d47',
-      });
-      return;
-    }
-
-    const form = document.getElementById('uploadForm');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-  }
-
-  document.getElementById('photoInput').addEventListener('change', function () {
-    const file = this.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const preview = document.getElementById('preview');
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-
-  let isEditing = false; // ✅ 수정 상태 전역 변수
-
-  function editUploadForm() {
-    isEditing = true; // ✅ 수정 상태로 변경
-    const form = document.getElementById('uploadForm');
-    form.style.display = 'block';
-
-    const content = /*[[${content}]]*/ '';
-    const level = /*[[${level}]]*/ '';
-    const imagePath = /*[['${imagePath}']]*/ '';
-
-    document.getElementById('missionTextInput').value = content;
-    document.getElementById('levelHidden').value = level;
-
-    const preview = document.getElementById('preview');
-    preview.src = imagePath;
-    preview.style.display = 'block';
-  }
-
-  document.getElementById('uploadForm').addEventListener('submit', function (e) {
-  e.preventDefault(); // 기본 제출 막기
-
-  const form = this; // 내부에서 접근할 수 있도록 따로 변수에 저장
-
-  Swal.fire({
-    icon: 'success',
-    title: '업로드 완료!',
-    text: '미션 인증이 업로드 되었습니다.\n관리자의 승인을 기다려주세요!',
-    confirmButtonColor: '#397362',
-    background: 'white',
-    color: '#3c4d47',
-  }).then(() => {
-    form.submit(); // ✅ SweetAlert 닫힌 후 실제로 서버로 제출
-  });
+    }).then(() => {
+        // 로컬 스토리지에서 미션을 불러와서 UI에 업데이트
+        const storedMission = localStorage.getItem('selectedMission');
+        if (storedMission) {
+            document.getElementById('missionText').innerText = storedMission; // 미션 내용 업데이트
+        } else {
+            document.getElementById('missionText').innerText = '미션 주제를 선택하세요!';
+        }
+        // 서버로 데이터를 전송 (입력 내용만)
+        form.submit();
+    });
 });
 
-
-     // ✅ 미션 현황 버튼 클릭 이벤트
+    // ✅ 미션 현황 버튼 클릭 이벤트
     document.getElementById('showMissionStatus').addEventListener('click', () => {
-      // ✅ 난이도별 미션 목록 HTML 생성
+        // ✅ 난이도별 미션 목록 HTML 생성
         let html = '';
         for (const level of ['상', '중', '하']) {
-          html += `<h3 style="color:#397362; text-align:center;">[난이도 ${level}]</h3><ul style="list-style:none; padding:0; text-align:center;">`;
-          missions[level].forEach(m => {
-            html += `<li style="margin: 6px 0;">${m}</li>`;
-          });
-          html += '</ul>';
+            html += `<h3 style="color:#397362; text-align:center;">[난이도 ${level}]</h3><ul style="list-style:none; padding:0; text-align:center;">`;
+            missions[level].forEach(m => {
+                html += `<li style="margin: 6px 0;">${m}</li>`;
+            });
+            html += '</ul>';
         }
 
-    Swal.fire({
-        title: '미션 목록',
-        html: `<div class="custom-swal-popup">${html}</div>`, // ✅ 높이 제한된 div로 감싸기
-        confirmButtonColor: '#397362',
-        width: '400px',
-        background: '#cfe3d8',
-        color: '#3c4d47',
-        customClass: {
-          popup: 'mission-status-popup'
-        }
-      });
-  });
+        Swal.fire({
+            title: '미션 목록',
+            html: `<div class="custom-swal-popup">${html}</div>`, // ✅ 높이 제한된 div로 감싸기
+            confirmButtonColor: '#397362',
+            width: '400px',
+            background: '#cfe3d8',
+            color: '#3c4d47',
+            customClass: {
+                popup: 'mission-status-popup'
+            }
+        });
+    });
+   window.addEventListener('DOMContentLoaded', (event) => {
+    // 로컬 스토리지에서 저장된 미션 값 불러오기
+    const storedMission = localStorage.getItem('selectedMission');
 
-    function editUploadForm() {
-        const form = document.getElementById('uploadForm');
-        form.style.display = 'block';
-
-        // 기존 미션 내용 세팅
-        document.getElementById('missionTextInput').value = /*[[${content}]]*/ '';
-        document.getElementById('levelHidden').value = /*[[${level}]]*/ '';
-        document.getElementById('preview').src = /*[['/files/' + ${imagePath}]]*/ '';
-        document.getElementById('preview').style.display = 'block';
+    // 미션이 저장되어 있으면 화면에 표시
+    if (storedMission) {
+        document.getElementById('missionText').innerText = storedMission;
+    } else {
+        // 저장된 미션이 없다면 기본 텍스트 표시
+        document.getElementById('missionText').innerText = '미션 주제를 선택하세요!';
     }
+
+    // 만약 미션이 삭제되었을 경우 (서버에서 플래그 전달)
+    const missionDeleted = /*[[${missionDeleted}]]*/ false;  // 서버에서 전달된 플래그
+    if (missionDeleted) {
+        // 로컬 스토리지 초기화 (삭제된 경우)
+        localStorage.removeItem('selectedMission');
+        document.getElementById('missionText').innerText = '미션 주제를 선택하세요!';
+    }
+});
 
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
+    const uploaded = /*[[${uploaded}]]*/ false; // 서버에서 전달된 uploaded 값
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // 'uploaded' 값이 true이면 '인증 수정'으로 텍스트 변경
+        if (uploaded) {
+            document.getElementById('missionActionBtn').innerText = '인증 수정';
+        } else {
+            document.getElementById('missionActionBtn').innerText = '미션 인증';
+        }
+    });
+
     const isApproved = /*[[${approved}]]*/ false;
-    if (isApproved) {
-        Swal.fire({
-            icon: 'success',
-            title: '미션 인증 승인!',
-            text: '당신의 환경 미션 인증이 승인되었습니다! 🎉',
-            confirmButtonColor: '#397362',
-            background: 'white',
-            color: '#3c4d47'
+   if (isApproved && !localStorage.getItem('missionApproved')) {
+    Swal.fire({
+        icon: 'success',
+        title: '미션 인증 승인!',
+        html: '미션 인증이 승인되었습니다! 🎉<br><br>5point 축하드립니다!',  // 줄바꿈 추가
+        confirmButtonColor: '#397362',
+        background: 'white',
+        color: '#3c4d47'
+    }).then(() => {
+        // 메시지가 표시된 후, '승인 대기 메시지'를 '미션 성공!'으로 바꿈
+        document.getElementById('approvalMessage').innerText = '미션 성공!';
+
+        // 로컬 스토리지에 값 저장하여 한 번만 실행되게 하기
+        localStorage.setItem('missionApproved', 'true');
+        // 미션 성공 상태를 로컬 스토리지에 저장하여 새로 고침 후에도 계속 보이게 함
+        localStorage.setItem('missionSuccess', 'true');
+    });
+}
+
+// 페이지 로드 시 로컬 스토리지에서 '미션 성공' 상태 읽어오기
+window.addEventListener('DOMContentLoaded', () => {
+    const missionSuccess = localStorage.getItem('missionSuccess');
+
+    if (missionSuccess) {
+        // '미션 성공!' 메시지 표시
+        document.getElementById('approvalMessage').innerText = '미션 성공!';
+    }
+});
+
+    const preloadedLevel = /*[[${level}]]*/ null;  // 실제 level 값이 여기 들어가야 합니다.
+
+    // 처음엔 난이도 선택이 가능
+    if (preloadedLevel === null || preloadedLevel === 'null') {
+        selectedDifficulty = null;  // 초기 상태로 null로 설정
+        const buttons = document.querySelectorAll('.difficulty-buttons button');
+        buttons.forEach(btn => {
+            btn.disabled = false;  // 난이도 버튼 활성화
+            btn.style.cursor = 'pointer';  // 클릭 가능하게 변경
+            btn.title = '난이도를 선택하세요';  // 툴팁으로 설명 추가
         });
     }
 
-    const uploaded = /*[[${uploaded}]]*/ false;
+    // 업로드 후에는 난이도 선택을 막고 비활성화
+    if (preloadedLevel && preloadedLevel !== 'null') {
+        selectedDifficulty = preloadedLevel;
 
-  if (uploaded) {
-    // 난이도 버튼 비활성화
-    const buttons = document.querySelectorAll('.difficulty-buttons button');
-    buttons.forEach(btn => btn.disabled = true);
-
-    // 승인 대기 메시지 표시
-    const form = document.getElementById('uploadForm');
-    const status = document.createElement('p');
-    status.textContent = '✅ 관리자 승인 대기중입니다.';
-    status.style.color = '#3c4d47';
-    status.style.fontSize = '14px';
-    status.style.marginTop = '15px';
-    form.parentNode.insertBefore(status, form.nextSibling);
-  }
-    /*]]>*/
-
-    function editUploadForm() {
-        const form = document.getElementById('uploadForm');
-        form.style.display = 'block';
-
-        // 서버에서 Thymeleaf로 전달된 값들을 자바스크립트 변수에 담기
-        const content = /*[[${content}]]*/ '';
-        const level = /*[[${level}]]*/ '';
-        const imagePath = /*[['${imagePath}']]*/ '';
-
-        // 텍스트와 숨은 난이도 값 채우기
-        document.getElementById('missionTextInput').value = content;
-        document.getElementById('levelHidden').value = level;
-
-        // 이미지 미리보기 설정
-        const preview = document.getElementById('preview');
-        preview.src = imagePath;
-        preview.style.display = 'block';
+        const buttons = document.querySelectorAll('.difficulty-buttons button');
+        buttons.forEach(btn => {
+            btn.disabled = true;  // 난이도 버튼 비활성화
+            btn.style.cursor = 'not-allowed';  // 클릭 불가능하게 변경
+            btn.title = '이미 업로드한 후에는 다시 선택할 수 없습니다';  // 툴팁 수정
+        });
     }
+
+    // 미션 인증 버튼 클릭 시 난이도 선택 여부 체크
+    document.getElementById('missionActionBtn').addEventListener('click', (e) => {
+        if (selectedDifficulty === null) {
+            e.preventDefault(); // 버튼 클릭 막기
+            Swal.fire({
+                icon: 'warning',
+                title: '난이도 선택 필요!',
+                text: '먼저 난이도를 선택해주세요!',
+                confirmButtonColor: '#397362',
+                background: 'white',
+                color: '#3c4d47',
+            });
+        }
+    });
+    /*]]>*/
 </script>
+
 
 
 </body>

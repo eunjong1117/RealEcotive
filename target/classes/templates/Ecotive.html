@@ -1,181 +1,292 @@
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <title>Ecotive</title>
-      <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap"
+          rel="stylesheet"
+  />
+  <title>Ecotive</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-          margin: 0 auto;
-          font-family: "Jua", sans-serif;
-        }
+    body {
+      margin: 0 auto;
+      font-family: "Winky Sans", sans-serif;
+    }
 
-        header {
-          background-color: rgb(92, 183, 133);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 15px 20px;
-        }
+    header {
+      background-color: rgb(92, 183, 133);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
 
-        #home {
-          font-size: xx-large;
-          font-weight: 400;
-          color: rgb(250, 244, 227);
-          display: flex;
-          align-items: center;
-        }
+    #home {
+      font-size: xx-large;
+      font-weight: 400;
+      color: rgb(250, 244, 227);
+      display: flex;
+      align-items: center;
+    }
 
-        .sub_menu ul {
-          list-style: none;
-          display: flex;
-          position: fixed;
-          top: 0;
-          right: -250px;
-          width: 250px;
-          height: 100vh;
-          background-color: rgb(92, 183, 133);
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          transition: right 0.3s ease;
-          z-index: 1000;
-        }
+    .sub_menu ul {
+      list-style: none;
+      display: flex;
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100vh;
+      background-color: rgb(92, 183, 133);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: right 0.3s ease;
+      z-index: 1000;
+    }
 
-        .sub_menu ul li {
-          color: rgb(250, 244, 227);
-          cursor: pointer;
-          padding: 8px 25px;
-          margin-right: 20px;
-          margin-left: 20px;
-          font-size: larger;
-        }
+    .sub_menu ul li {
+      color: rgb(250, 244, 227);
+      cursor: pointer;
+      padding: 8px 25px;
+      margin-right: 20px;
+      margin-left: 20px;
+      font-size: larger;
+    }
 
-        .sub_menu ul li:hover {
-          background-color: rgb(250, 244, 227);
-          color: rgb(92, 183, 133);
-          border-radius: 30px;
-        }
+    .sub_menu ul li:hover {
+      background-color: rgb(250, 244, 227);
+      color: rgb(92, 183, 133);
+      border-radius: 30px;
+    }
 
-        #logout {
-          background-color: rgb(250, 244, 227);
-          color: rgb(92, 183, 133);
-          border-radius: 30px;
-          padding: 8px 17px;
-        }
-        #logout:hover {
-          background-color: rgb(250, 244, 227);
-          font-weight: 550;
-        }
-        .menu_icon {
-          font-size: 30px;
-          cursor: pointer;
-          color: rgb(250, 244, 227);
-          display: none;
-        }
+    #logout {
+      background-color: rgb(250, 244, 227);
+      color: rgb(92, 183, 133);
+      border-radius: 30px;
+      padding: 8px 17px;
+    }
+    #logout:hover {
+      background-color: rgb(250, 244, 227);
+      font-weight: 550;
+    }
+    .menu_icon {
+      font-size: 30px;
+      cursor: pointer;
+      color: rgb(250, 244, 227);
+      display: none;
+    }
 
-        .close_btn {
-          position: absolute;
-          top: 15px;
-          right: 20px;
-          font-size: 35px;
-          cursor: pointer;
-          color: rgb(250, 244, 227);
-        }
+    .close_btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 35px;
+      cursor: pointer;
+      color: rgb(250, 244, 227);
+    }
 
-        /* 반응형 */
-        @media screen and (max-width: 768px) {
-          #menu {
-            background-color: rgb(84, 168, 122);
-          }
-          .menu_icon {
-            display: block;
-          }
-          .sub_menu ul li {
-            margin: 15px 0;
-          }
-        }
-        @media screen and (min-width: 769px) {
-          .sub_menu ul {
-            position: static;
-            flex-direction: row;
-            height: auto;
-            background: none;
-            width: auto;
-          }
-          .close_btn {
-            display: none;
-          }
-        }
-        section {
-          display: flex;
-          justify-content: center;
-          box-sizing: border-box;
-        }
-        @media screen and (min-width: 769px) {
-          section {
-            width: 80%;
-            margin: 0 auto;
-          }
-        }
-        .Item_list {
-              text-decoration: none;
-              color: rgb(250, 244, 227);
+    #missionCheck {
+      width: 100%;
+      max-width: 740px;
+      background-color: #f5f7f6;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 30px auto; /* 가운데 정렬 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-          }
+    #missionCheck h2 {
+      font-size: 18px;
+      color: #2f4f4f;
+      margin-bottom: 20px; /* 줄바꿈 대신 여백 */
+      align-self: flex-start;
+    }
 
-          .Item_list:hover{
-              color: rgb(92, 183, 133);
-          }
-      </style>
-    </head>
+    .missionBox {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
 
-    <body>
-      <header>
-        <a href="/Ecotive" style="text-decoration-line: none">
-          <div id="home">
-            <span>Ecotive</span>
-            <img
+    .status {
+      background-color: #cce0d2;
+      border-radius: 10px;
+      padding: 35px 15px;
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      color: #2f4f4f;
+      margin-right: 10px;
+    }
+
+    .missionButton {
+      background-color: #43675b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 25px 25px;
+      font-size: 15px;
+      line-height: 1.4;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .missionButton:hover {
+      background-color: #36564b;
+    }
+
+    /* 반응형 */
+    @media screen and (max-width: 768px) {
+      #menu {
+        background-color: rgb(84, 168, 122);
+      }
+      .menu_icon {
+        display: block;
+      }
+      .sub_menu ul li {
+        margin: 15px 0;
+      }
+    }
+    @media screen and (min-width: 769px) {
+      .sub_menu ul {
+        position: static;
+        flex-direction: row;
+        height: auto;
+        background: none;
+        width: auto;
+      }
+      .close_btn {
+        display: none;
+      }
+    }
+    section {
+      display: flex;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    @media screen and (min-width: 769px) {
+      section {
+        width: 80%;
+        margin: 0 auto;
+      }
+    }
+     .Item_list {
+        text-decoration: none;
+        color: rgb(250, 244, 227);
+
+    }
+     .Item_list:hover{
+        color: rgb(92, 183, 133);
+    }
+
+  </style>
+</head>
+
+<body>
+<header>
+  <a href="/Ecotive" style="text-decoration-line: none">
+    <div id="home">
+      <span>Ecotive</span>
+      <img
               src="../static/images/sprout-earth.png"
               width="22"
               height="30"
               style="margin: 7px"
-            />
-          </div>
-        </a>
+      />
 
-        <nav class="sub_menu">
-          <div class="menu_icon" onclick="openMenu()">☰</div>
-          <ul id="menu">
-            <div class="close_btn" onclick="closeMenu()">&times;</div>
-            <li><a class="Item_list" href="/MissionInfo" >Mission</a></li>
-            <li><a class="Item_list" href="/Community">Community</a></li>
-            <li><a class="Item_list" href="/Shop">Shop</a></li>
-            <li><a class="Item_list" href="/My_Page" >My_Page</a></li>
-            <a href="/logout" style="text-decoration-line: none">
-              <li id="logout">Logout</li>
-            </a>
-          </ul>
-        </nav>
-      </header>
-      <section>
-        <img
+    </div>
+  </a>
+
+  <nav class="sub_menu">
+    <div class="menu_icon" onclick="openMenu()">☰</div>
+    <ul id="menu">
+      <div class="close_btn" onclick="closeMenu()">&times;</div>
+      <li><a class="Item_list" href="/Mission" >Mission</a></li>
+      <li><a class="Item_list" href="/Community">Community</a></li>
+      <li><a class="Item_list" href="/Shop">Shop</a></li>
+      <li><a class="Item_list" href="/My_Page" >My_Page</a></li>
+      <a href="/logout" style="text-decoration-line: none">
+        <li id="logout">Logout</li>
+      </a>
+    </ul>
+  </nav>
+</header>
+<section>
+  <img
           src="../static/images/banner.png"
           width="100%;"
           height="auto;"
           style="max-width: 768px; transition: all 0.3s ease"
-        />
-      </section>
-    <script src="../static/js/Ecotive.js"></script>
-    </body>
-  </html>
+  />
+
+</section>
+<br />
+<div id="missionCheck">
+  <h2>오늘의 환경 미션은</h2>
+
+  <div class="missionBox">
+    <div class="status">아직 없습니다.</div>
+    <a href="/MissionInfo">
+      <button class="missionButton">미션 배정 <br />바로가기</button>
+    </a>
+  </div>
+</div>
+
+<script>
+
+  function openMenu() {
+    const menu = document.getElementById("menu");
+    menu.style.right = "0px";
+  }
+  function closeMenu() {
+    const menu = document.getElementById("menu");
+    menu.style.right = "-250px";
+  }
+  window.addEventListener("resize", function () {
+    const menu = document.getElementById("menu");
+    if (window.innerWidth > 768) {
+      menu.style.right = "0";
+    } else {
+      menu.style.right = "-250px";
+    }
+  });
+  document.addEventListener("DOMContentLoaded", function () {
+    const menu = document.getElementById("menu");
+    if (window.innerWidth > 768) {
+      menu.style.right = "0";
+    } else {
+      menu.style.right = "-250px";
+    }
+  });
+
+  // ✅ 출석 완료 팝업 (페이지 진입 시 1회 보여주기)
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!sessionStorage.getItem('attendanceShown')) {
+        Swal.fire({
+          title: '출석 완료!',
+          text: '5 포인트가 지급되었습니다!',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#397362',
+          background: 'white',
+          color: '#3c4d47'
+        });
+        sessionStorage.setItem('attendanceShown', 'true');
+      }
+    });
+</script>
+</body>
+</html>
