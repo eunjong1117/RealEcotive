@@ -22,7 +22,7 @@ public class MissionAuthService {
     @Value("${file.upload-dir}") // application.properties 에 설정한 경로
     private String uploadDir;
 
-    public void saveMission(String email, String level, String content, MultipartFile file) throws IOException {
+    public void saveMission(String email, String assignedMission, String level, String content, MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("파일이 비어 있습니다.");
         }
@@ -43,6 +43,7 @@ public class MissionAuthService {
 
         // ✅ DB 저장
         MissionAuth missionAuth = MissionAuth.builder()
+                .assignedMission(assignedMission)
                 .email(email)
                 .level(level)
                 .content(content)
@@ -53,6 +54,7 @@ public class MissionAuthService {
 
         missionAuthRepository.save(missionAuth);
     }
+
 
     public MissionAuth findById(Long id) {
         return missionAuthRepository.findById(id)

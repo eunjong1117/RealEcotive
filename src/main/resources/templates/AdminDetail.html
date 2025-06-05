@@ -123,7 +123,7 @@
     <div class="info">
         회원 이메일: <span th:text="${mission.email}"></span> |
         등록일: <span th:text="${#temporals.format(mission.createdAt, 'yyyy-MM-dd')}"></span> |
-        난이도: <span th:text="${mission.level}"></span>
+        미션 : <span th:text="${mission.assignedMission}"></span>
     </div>
     <img th:src="@{${mission.imagePath}}" alt="미션 사진" style="width: 100%; max-height: 400px;" />
     <div class="content" th:text="${mission.content}"></div>
