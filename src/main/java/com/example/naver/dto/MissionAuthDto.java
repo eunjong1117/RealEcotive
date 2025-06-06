@@ -16,6 +16,8 @@ public class MissionAuthDto {
     private String content;
     private String createdAt;
     private boolean isApproved;
+    private boolean isRejected;
+    private String assignedMission;
 
     public MissionAuthDto(MissionAuth mission) {
         this.id = mission.getId();
@@ -26,10 +28,17 @@ public class MissionAuthDto {
                 ? mission.getCreatedAt().toString()
                 : "";  // null일 땐 빈 문자열
         this.isApproved = mission.isApproved();
+        this.assignedMission = mission.getAssignedMission();
+        this.isRejected = mission.isRejected();
+
     }
 
 
     public boolean isApproved() {
         return isApproved;
+    }
+
+    public boolean isRejected() {
+        return isRejected;
     }
 }

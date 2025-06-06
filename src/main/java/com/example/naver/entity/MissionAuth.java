@@ -42,4 +42,8 @@ public class MissionAuth {
     private String filePath;
 
     private LocalDateTime createdAt;  // 인증 등록 시각
+
+    private boolean rejected; // 거절 사유
+
+    private String rejectReason;
 }

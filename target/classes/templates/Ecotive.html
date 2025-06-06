@@ -10,6 +10,7 @@
           rel="stylesheet"
   />
   <title>Ecotive</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     * {
       margin: 0;
@@ -239,22 +240,68 @@
 
   <div class="missionBox">
     <div class="status">아직 없습니다.</div>
-    <a href="/MissionInfo">
-      <button class="missionButton">미션 배정 <br />바로가기</button>
+    <!-- 미션 배정 버튼 (기본 노출) -->
+    <a id="assignBtn" href="/Mission">
+      <button class="missionButton">미션 배정 <br />바로 가기</button>
+    </a>
+
+    <!-- 미션 인증 버튼 (초기에는 숨김 처리) -->
+    <a id="authBtn" href="/Mission" style="display: none;">
+      <button class="missionButton">미션 인증 <br />바로 가기</button>
     </a>
   </div>
 </div>
 
 <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const statusDiv = document.querySelector('.status');
+    const selectedMission = localStorage.getItem('selectedMission');
+    const assignBtn = document.getElementById('assignBtn');
+    const authBtn = document.getElementById('authBtn');
+    const today = new Date().toISOString().split('T')[0]; // '2025-06-07' 같은 형식
+    const lastAttendanceDate = localStorage.getItem('attendanceDate');
 
+    // 버튼 전환 로직
+    if (selectedMission) {
+      statusDiv.innerText = selectedMission;
+      assignBtn.style.display = 'none';
+      authBtn.style.display = 'inline-block';
+    } else {
+      statusDiv.innerText = '아직 없습니다.';
+      assignBtn.style.display = 'inline-block';
+      authBtn.style.display = 'none';
+    }
+
+    // 메뉴 반응형
+    const menu = document.getElementById("menu");
+    if (window.innerWidth > 768) {
+      menu.style.right = "0";
+    } else {
+      menu.style.right = "-250px";
+    }
+
+    if (lastAttendanceDate !== today) {
+    Swal.fire({
+      title: '출석 완료!',
+      text: '5 포인트가 지급되었습니다!',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#397362',
+      background: 'white',
+      color: '#3c4d47'
+    });
+
+    localStorage.setItem('attendanceDate', today); // 오늘 날짜 저장
+  }
+});
   function openMenu() {
-    const menu = document.getElementById("menu");
-    menu.style.right = "0px";
+    document.getElementById("menu").style.right = "0px";
   }
+
   function closeMenu() {
-    const menu = document.getElementById("menu");
-    menu.style.right = "-250px";
+    document.getElementById("menu").style.right = "-250px";
   }
+
   window.addEventListener("resize", function () {
     const menu = document.getElementById("menu");
     if (window.innerWidth > 768) {
@@ -263,30 +310,6 @@
       menu.style.right = "-250px";
     }
   });
-  document.addEventListener("DOMContentLoaded", function () {
-    const menu = document.getElementById("menu");
-    if (window.innerWidth > 768) {
-      menu.style.right = "0";
-    } else {
-      menu.style.right = "-250px";
-    }
-  });
-
-  // ✅ 출석 완료 팝업 (페이지 진입 시 1회 보여주기)
-    window.addEventListener('DOMContentLoaded', () => {
-      if (!sessionStorage.getItem('attendanceShown')) {
-        Swal.fire({
-          title: '출석 완료!',
-          text: '5 포인트가 지급되었습니다!',
-          icon: 'success',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#397362',
-          background: 'white',
-          color: '#3c4d47'
-        });
-        sessionStorage.setItem('attendanceShown', 'true');
-      }
-    });
 </script>
 </body>
 </html>
