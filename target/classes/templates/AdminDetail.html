@@ -144,7 +144,7 @@
         confirmButtonColor: '#5cb785',
         cancelButtonColor: '#bbb',
         confirmButtonText: '승인',
-        cancelButtonText: '취소',
+        cancelButtonText: '거절',
         background: 'white',
         customClass: {
           popup: 'custom-swal-popup',
@@ -177,6 +177,60 @@
         }
       });
     }
+
+    function reject() {
+  const missionId = [[${mission.id}]];
+
+  Swal.fire({
+    title: '거절 사유를 입력하세요',
+    input: 'textarea',
+    inputLabel: '거절 사유',
+    inputPlaceholder: '사유를 입력해주세요...',
+    inputAttributes: { 'aria-label': '거절 사유' },
+    showCancelButton: true,
+    confirmButtonColor: '#5cb785',
+    cancelButtonColor: '#bbb',
+    confirmButtonText: '거절',
+    background: 'white',
+    customClass: {
+      popup: 'custom-swal-popup',
+      title: 'custom-swal-title',
+      confirmButton: 'custom-swal-button'
+    }
+  }).then((result) => {
+    if (result.isConfirmed && result.value) {
+      const reason = result.value;
+      fetch(`/api/admin/reject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: missionId,
+          reason: reason
+        })
+      })
+      .then(res => res.text())
+      .then(data => {
+        if (data === 'ok') {
+          Swal.fire({
+            icon: 'success',
+            title: '거절되었습니다!',
+            confirmButtonColor: '#5cb785',
+            background: 'white',
+            customClass: {
+              popup: 'custom-swal-popup',
+              title: 'custom-swal-title',
+              confirmButton: 'custom-swal-button'
+            }
+          }).then(() => {
+            location.href = '/Admin';
+          });
+        }
+      });
+    }
+  });
+}
 </script>
 
 </body>

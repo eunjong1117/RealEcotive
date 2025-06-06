@@ -309,8 +309,8 @@
                 <th>ID</th>
                 <th>회원 이메일</th>
                 <th>날짜</th>
-                <th>난이도</th>
-                <th>글</th>
+                <th>미션</th>
+                <th>인증</th>
             </tr>
             </thead>
             <tbody></tbody>
@@ -362,12 +362,19 @@
       tableBody.innerHTML = '';
       data.forEach(m => {
         const tr = document.createElement('tr');
+        // 인증 상태 판단
+        let status = '대기';
+        if (m.approved) {
+          status = '승인';
+        } else if (m.rejected) {
+          status = '거절';
+        }
         tr.innerHTML = `
           <td>${m.id}</td>
           <td>${m.email}</td>
           <td>${m.createdAt.split('T')[0]}</td>
-          <td>${m.level}</td>
-          <td>${m.content}</td>
+          <td>${m.assignedMission}</td>
+          <td>${status}</td>
         `;
         tr.onclick = () => {
           window.location.href = `/admin/mission/${m.id}`;

@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.naver.dto.RejectRequestDto;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -110,6 +112,8 @@ public class MissionAuthController {
             model.addAttribute("content", mission.getContent());  // ✅ 미션 내용
             model.addAttribute("level", mission.getLevel());      // ✅ 난이도
             model.addAttribute("imagePath", mission.getImagePath()); // ✅ 이미지 경로
+            model.addAttribute("rejected", mission.isRejected());
+            model.addAttribute("rejectReason", mission.getRejectReason());
         } else {
             model.addAttribute("uploaded", false);
             model.addAttribute("approved", false);
@@ -129,4 +133,18 @@ public class MissionAuthController {
 
         return "ok";
     }
+
+    @PostMapping("/api/admin/reject")
+    @ResponseBody
+    public String rejectMission(@RequestBody RejectRequestDto rejectRequest) {
+        MissionAuth mission = missionAuthRepository.findById(rejectRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 미션이 없습니다. id=" + rejectRequest.getId()));
+
+        mission.setApproved(false);
+        mission.setRejected(true); // 필드 있어야 함
+        mission.setRejectReason(rejectRequest.getReason());
+        missionAuthRepository.save(mission);
+        return "ok";
+    }
+
 }
