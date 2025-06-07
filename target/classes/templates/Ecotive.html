@@ -1,315 +1,340 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-          href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap"
-          rel="stylesheet"
-  />
-  <title>Ecotive</title>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet"
+    />
+    <title>Ecotive</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
 
-    body {
-      margin: 0 auto;
-      font-family: "Winky Sans", sans-serif;
-    }
+        body {
+          margin: 0 auto;
+          font-family: "Winky Sans", sans-serif;
+        }
 
-    header {
-      background-color: rgb(92, 183, 133);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-    }
+        header {
+          background-color: rgb(92, 183, 133);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 20px;
+        }
 
-    #home {
-      font-size: xx-large;
-      font-weight: 400;
-      color: rgb(250, 244, 227);
-      display: flex;
-      align-items: center;
-    }
+        #home {
+          font-size: xx-large;
+          font-weight: 400;
+          color: rgb(250, 244, 227);
+          display: flex;
+          align-items: center;
+        }
 
-    .sub_menu ul {
-      list-style: none;
-      display: flex;
-      position: fixed;
-      top: 0;
-      right: -250px;
-      width: 250px;
-      height: 100vh;
-      background-color: rgb(92, 183, 133);
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: right 0.3s ease;
-      z-index: 1000;
-    }
+        .sub_menu ul {
+          list-style: none;
+          display: flex;
+          position: fixed;
+          top: 0;
+          right: -250px;
+          width: 250px;
+          height: 100vh;
+          background-color: rgb(92, 183, 133);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: right 0.3s ease;
+          z-index: 1000;
+        }
 
-    .sub_menu ul li {
-      color: rgb(250, 244, 227);
-      cursor: pointer;
-      padding: 8px 25px;
-      margin-right: 20px;
-      margin-left: 20px;
-      font-size: larger;
-    }
+        .sub_menu ul li {
+          color: rgb(250, 244, 227);
+          cursor: pointer;
+          padding: 8px 25px;
+          margin-right: 20px;
+          margin-left: 20px;
+          font-size: larger;
+        }
 
-    .sub_menu ul li:hover {
-      background-color: rgb(250, 244, 227);
-      color: rgb(92, 183, 133);
-      border-radius: 30px;
-    }
+        .sub_menu ul li:hover {
+          background-color: rgb(250, 244, 227);
+          color: rgb(92, 183, 133);
+          border-radius: 30px;
+        }
 
-    #logout {
-      background-color: rgb(250, 244, 227);
-      color: rgb(92, 183, 133);
-      border-radius: 30px;
-      padding: 8px 17px;
-    }
-    #logout:hover {
-      background-color: rgb(250, 244, 227);
-      font-weight: 550;
-    }
-    .menu_icon {
-      font-size: 30px;
-      cursor: pointer;
-      color: rgb(250, 244, 227);
-      display: none;
-    }
+        #logout {
+          background-color: rgb(250, 244, 227);
+          color: rgb(92, 183, 133);
+          border-radius: 30px;
+          padding: 8px 17px;
+        }
+        #logout:hover {
+          background-color: rgb(250, 244, 227);
+          font-weight: 550;
+        }
+        .menu_icon {
+          font-size: 30px;
+          cursor: pointer;
+          color: rgb(250, 244, 227);
+          display: none;
+        }
 
-    .close_btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 35px;
-      cursor: pointer;
-      color: rgb(250, 244, 227);
-    }
+        .close_btn {
+          position: absolute;
+          top: 15px;
+          right: 20px;
+          font-size: 35px;
+          cursor: pointer;
+          color: rgb(250, 244, 227);
+        }
 
-    #missionCheck {
-      width: 100%;
-      max-width: 740px;
-      background-color: #f5f7f6;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 30px auto; /* 가운데 정렬 */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        #missionCheck {
+          width: 100%;
+          max-width: 740px;
+          background-color: #f5f7f6;
+          padding: 20px;
+          border-radius: 10px;
+          margin: 30px auto; /* 가운데 정렬 */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
 
-    #missionCheck h2 {
-      font-size: 18px;
-      color: #2f4f4f;
-      margin-bottom: 20px; /* 줄바꿈 대신 여백 */
-      align-self: flex-start;
-    }
+        #missionCheck h2 {
+          font-size: 18px;
+          color: #2f4f4f;
+          margin-bottom: 20px; /* 줄바꿈 대신 여백 */
+          align-self: flex-start;
+        }
 
-    .missionBox {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-    }
+        .missionBox {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
 
-    .status {
-      background-color: #cce0d2;
-      border-radius: 10px;
-      padding: 35px 15px;
-      flex: 1;
-      text-align: center;
-      font-size: 16px;
-      color: #2f4f4f;
-      margin-right: 10px;
-    }
+        .status {
+          background-color: #cce0d2;
+          border-radius: 10px;
+          padding: 35px 15px;
+          flex: 1;
+          text-align: center;
+          font-size: 16px;
+          color: #2f4f4f;
+          margin-right: 10px;
+        }
 
-    .missionButton {
-      background-color: #43675b;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 25px 25px;
-      font-size: 15px;
-      line-height: 1.4;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+        .missionButton {
+          background-color: #43675b;
+          color: white;
+          border: none;
+          border-radius: 10px;
+          padding: 25px 25px;
+          font-size: 15px;
+          line-height: 1.4;
+          cursor: pointer;
+          white-space: nowrap;
+        }
 
-    .missionButton:hover {
-      background-color: #36564b;
-    }
+        .missionButton:hover {
+          background-color: #36564b;
+        }
 
-    /* 반응형 */
-    @media screen and (max-width: 768px) {
-      #menu {
-        background-color: rgb(84, 168, 122);
-      }
-      .menu_icon {
-        display: block;
-      }
-      .sub_menu ul li {
-        margin: 15px 0;
-      }
-    }
-    @media screen and (min-width: 769px) {
-      .sub_menu ul {
-        position: static;
-        flex-direction: row;
-        height: auto;
-        background: none;
-        width: auto;
-      }
-      .close_btn {
-        display: none;
-      }
-    }
-    section {
-      display: flex;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-    @media screen and (min-width: 769px) {
-      section {
-        width: 80%;
-        margin: 0 auto;
-      }
-    }
-     .Item_list {
-        text-decoration: none;
-        color: rgb(250, 244, 227);
+        /* 반응형 */
+        @media screen and (max-width: 768px) {
+          #menu {
+            background-color: rgb(84, 168, 122);
+          }
+          .menu_icon {
+            display: block;
+          }
+          .sub_menu ul li {
+            margin: 15px 0;
+          }
+        }
+        @media screen and (min-width: 769px) {
+          .sub_menu ul {
+            position: static;
+            flex-direction: row;
+            height: auto;
+            background: none;
+            width: auto;
+          }
+          .close_btn {
+            display: none;
+          }
+        }
+        section {
+          display: flex;
+          justify-content: center;
+          box-sizing: border-box;
+        }
+        @media screen and (min-width: 769px) {
+          section {
+            width: 80%;
+            margin: 0 auto;
+          }
+        }
+         .Item_list {
+            text-decoration: none;
+            color: rgb(250, 244, 227);
 
-    }
-     .Item_list:hover{
-        color: rgb(92, 183, 133);
-    }
+        }
+         .Item_list:hover{
+            color: rgb(92, 183, 133);
+        }
 
-  </style>
+    </style>
 </head>
 
 <body>
 <header>
-  <a href="/Ecotive" style="text-decoration-line: none">
-    <div id="home">
-      <span>Ecotive</span>
-      <img
-              src="../static/images/sprout-earth.png"
-              width="22"
-              height="30"
-              style="margin: 7px"
-      />
+    <a href="/Ecotive" style="text-decoration-line: none">
+        <div id="home">
+            <span>Ecotive</span>
+            <img
+                    src="../static/images/sprout-earth.png"
+                    width="22"
+                    height="30"
+                    style="margin: 7px"
+            />
 
-    </div>
-  </a>
+        </div>
+    </a>
 
-  <nav class="sub_menu">
-    <div class="menu_icon" onclick="openMenu()">☰</div>
-    <ul id="menu">
-      <div class="close_btn" onclick="closeMenu()">&times;</div>
-      <li><a class="Item_list" href="/Mission" >Mission</a></li>
-      <li><a class="Item_list" href="/Community">Community</a></li>
-      <li><a class="Item_list" href="/Shop">Shop</a></li>
-      <li><a class="Item_list" href="/My_Page" >My_Page</a></li>
-      <a href="/logout" style="text-decoration-line: none">
-        <li id="logout">Logout</li>
-      </a>
-    </ul>
-  </nav>
+    <nav class="sub_menu">
+        <div class="menu_icon" onclick="openMenu()">☰</div>
+        <ul id="menu">
+            <div class="close_btn" onclick="closeMenu()">&times;</div>
+            <li><a class="Item_list" href="/Mission">Mission</a></li>
+            <li><a class="Item_list" href="/Community">Community</a></li>
+            <li><a class="Item_list" href="/Shop">Shop</a></li>
+            <li><a class="Item_list" href="/My_Page">My_Page</a></li>
+            <a href="/logout" style="text-decoration-line: none">
+                <li id="logout">Logout</li>
+            </a>
+        </ul>
+    </nav>
 </header>
 <section>
-  <img
-          src="../static/images/banner.png"
-          width="100%;"
-          height="auto;"
-          style="max-width: 768px; transition: all 0.3s ease"
-  />
+    <img
+            src="../static/images/banner.png"
+            width="100%;"
+            height="auto;"
+            style="max-width: 768px; transition: all 0.3s ease"
+    />
 
 </section>
-<br />
+<br/>
 <div id="missionCheck">
-  <h2>오늘의 환경 미션은</h2>
+    <h2>오늘의 환경 미션은</h2>
 
-  <div class="missionBox">
-    <div class="status">아직 없습니다.</div>
-    <!-- 미션 배정 버튼 (기본 노출) -->
-    <a id="assignBtn" href="/Mission">
-      <button class="missionButton">미션 배정 <br />바로 가기</button>
-    </a>
+    <div class="missionBox">
+        <div class="status">아직 없습니다.</div>
+        <!-- 미션 배정 버튼 (기본 노출) -->
+        <a id="assignBtn" href="/Mission">
+            <button class="missionButton">미션 배정 <br/>바로 가기</button>
+        </a>
 
-    <!-- 미션 인증 버튼 (초기에는 숨김 처리) -->
-    <a id="authBtn" href="/Mission" style="display: none;">
-      <button class="missionButton">미션 인증 <br />바로 가기</button>
-    </a>
-  </div>
+        <!-- 미션 인증 버튼 (초기에는 숨김 처리) -->
+        <a id="authBtn" href="/Mission" style="display: none;">
+            <button class="missionButton">미션 인증 <br/>바로 가기</button>
+        </a>
+
+        <div id="completedMessage" style="display: none; font-weight: bold; color: #397362; text-align: center; margin-top: 10px;">
+            <button class="missionButton">축하드립니다!🎉 <br/>미션 완료!!</button>
+        </div>
+    </div>
 </div>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const statusDiv = document.querySelector('.status');
-    const selectedMission = localStorage.getItem('selectedMission');
-    const assignBtn = document.getElementById('assignBtn');
-    const authBtn = document.getElementById('authBtn');
-    const today = new Date().toISOString().split('T')[0]; // '2025-06-07' 같은 형식
-    const lastAttendanceDate = localStorage.getItem('attendanceDate');
+    window.addEventListener('DOMContentLoaded', () => {
+      const statusDiv = document.querySelector('.status');
+  const selectedMission = localStorage.getItem('selectedMission');
+  const approved = localStorage.getItem('missionApproved') === 'true';  // ✅ 승인 여부 체크
+  const assignBtn = document.getElementById('assignBtn');
+  const authBtn = document.getElementById('authBtn');
+  const completedMessage = document.getElementById('completedMessage');  // ✅ 완료 메시지
+  const rejected = localStorage.getItem('missionRejected') === 'true';
+  const rejectReason = localStorage.getItem('rejectReason'); // 거절 사유
 
-    // 버튼 전환 로직
-    if (selectedMission) {
-      statusDiv.innerText = selectedMission;
-      assignBtn.style.display = 'none';
-      authBtn.style.display = 'inline-block';
-    } else {
-      statusDiv.innerText = '아직 없습니다.';
-      assignBtn.style.display = 'inline-block';
-      authBtn.style.display = 'none';
+  const today = new Date().toISOString().split('T')[0];
+  const lastAttendanceDate = localStorage.getItem('attendanceDate');
+
+  // ✅ 미션 상태에 따른 UI
+  if (selectedMission) {
+  statusDiv.innerText = selectedMission;
+
+  if (approved) {
+    assignBtn.style.display = 'none';
+    authBtn.style.display = 'none';
+    completedMessage.style.display = 'block';
+  } else if (rejected) {
+    statusDiv.innerText = selectedMission;
+    assignBtn.style.display = 'none';
+    authBtn.style.display = 'inline-block';
+    completedMessage.style.display = 'none';
+    // ✅ 버튼 텍스트를 거절됨으로 표시
+    const authButtonText = authBtn.querySelector('button');
+    if (authButtonText) {
+        authButtonText.innerHTML = '❌ 미션 거절됨<br/>다시 인증하기';
     }
-
-    // 메뉴 반응형
-    const menu = document.getElementById("menu");
-    if (window.innerWidth > 768) {
-      menu.style.right = "0";
-    } else {
-      menu.style.right = "-250px";
-    }
-
-    if (lastAttendanceDate !== today) {
-    Swal.fire({
-      title: '출석 완료!',
-      text: '5 포인트가 지급되었습니다!',
-      icon: 'success',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#397362',
-      background: 'white',
-      color: '#3c4d47'
-    });
-
-    localStorage.setItem('attendanceDate', today); // 오늘 날짜 저장
+  } else {
+    assignBtn.style.display = 'none';
+    authBtn.style.display = 'inline-block';
+    completedMessage.style.display = 'none';
   }
-});
-  function openMenu() {
-    document.getElementById("menu").style.right = "0px";
-  }
+}
 
-  function closeMenu() {
-    document.getElementById("menu").style.right = "-250px";
-  }
+      // 메뉴 반응형
+      const menu = document.getElementById("menu");
+      if (window.innerWidth > 768) {
+        menu.style.right = "0";
+      } else {
+        menu.style.right = "-250px";
+      }
 
-  window.addEventListener("resize", function () {
-    const menu = document.getElementById("menu");
-    if (window.innerWidth > 768) {
-      menu.style.right = "0";
-    } else {
-      menu.style.right = "-250px";
+      if (lastAttendanceDate !== today) {
+      Swal.fire({
+        title: '출석 완료!',
+        text: '5 포인트가 지급되었습니다!',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#397362',
+        background: 'white',
+        color: '#3c4d47'
+      });
+
+      localStorage.setItem('attendanceDate', today); // 오늘 날짜 저장
     }
   });
+
+    function openMenu() {
+      document.getElementById("menu").style.right = "0px";
+    }
+
+    function closeMenu() {
+      document.getElementById("menu").style.right = "-250px";
+    }
+
+    window.addEventListener("resize", function () {
+      const menu = document.getElementById("menu");
+      if (window.innerWidth > 768) {
+        menu.style.right = "0";
+      } else {
+        menu.style.right = "-250px";
+      }
+    });
+
 </script>
 </body>
 </html>

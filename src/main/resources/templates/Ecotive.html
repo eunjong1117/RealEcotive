@@ -249,28 +249,51 @@
         <a id="authBtn" href="/Mission" style="display: none;">
             <button class="missionButton">미션 인증 <br/>바로 가기</button>
         </a>
+
+        <div id="completedMessage" style="display: none; font-weight: bold; color: #397362; text-align: center; margin-top: 10px;">
+            <button class="missionButton">축하드립니다!🎉 <br/>미션 완료!!</button>
+        </div>
     </div>
 </div>
 
 <script>
     window.addEventListener('DOMContentLoaded', () => {
       const statusDiv = document.querySelector('.status');
-      const selectedMission = localStorage.getItem('selectedMission');
-      const assignBtn = document.getElementById('assignBtn');
-      const authBtn = document.getElementById('authBtn');
-      const today = new Date().toISOString().split('T')[0]; // '2025-06-07' 같은 형식
-      const lastAttendanceDate = localStorage.getItem('attendanceDate');
+  const selectedMission = localStorage.getItem('selectedMission');
+  const approved = localStorage.getItem('missionApproved') === 'true';  // ✅ 승인 여부 체크
+  const assignBtn = document.getElementById('assignBtn');
+  const authBtn = document.getElementById('authBtn');
+  const completedMessage = document.getElementById('completedMessage');  // ✅ 완료 메시지
+  const rejected = localStorage.getItem('missionRejected') === 'true';
+  const rejectReason = localStorage.getItem('rejectReason'); // 거절 사유
 
-      // 버튼 전환 로직
-      if (selectedMission) {
-        statusDiv.innerText = selectedMission;
-        assignBtn.style.display = 'none';
-        authBtn.style.display = 'inline-block';
-      } else {
-        statusDiv.innerText = '아직 없습니다.';
-        assignBtn.style.display = 'inline-block';
-        authBtn.style.display = 'none';
-      }
+  const today = new Date().toISOString().split('T')[0];
+  const lastAttendanceDate = localStorage.getItem('attendanceDate');
+
+  // ✅ 미션 상태에 따른 UI
+  if (selectedMission) {
+  statusDiv.innerText = selectedMission;
+
+  if (approved) {
+    assignBtn.style.display = 'none';
+    authBtn.style.display = 'none';
+    completedMessage.style.display = 'block';
+  } else if (rejected) {
+    statusDiv.innerText = selectedMission;
+    assignBtn.style.display = 'none';
+    authBtn.style.display = 'inline-block';
+    completedMessage.style.display = 'none';
+    // ✅ 버튼 텍스트를 거절됨으로 표시
+    const authButtonText = authBtn.querySelector('button');
+    if (authButtonText) {
+        authButtonText.innerHTML = '❌ 미션 거절됨<br/>다시 인증하기';
+    }
+  } else {
+    assignBtn.style.display = 'none';
+    authBtn.style.display = 'inline-block';
+    completedMessage.style.display = 'none';
+  }
+}
 
       // 메뉴 반응형
       const menu = document.getElementById("menu");
