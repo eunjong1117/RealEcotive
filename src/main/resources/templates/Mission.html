@@ -226,7 +226,7 @@
 </head>
 <body>
 <header>
-    <a href="#" style="text-decoration-line: none">
+    <a href="/Ecotive" style="text-decoration-line: none">
         <div id="home">
             <span>Ecotive</span>
             <img src="../static/images/sprout-earth.png" width="22" height="30" style="margin: 7px" />
@@ -236,10 +236,10 @@
         <div class="menu_icon" onclick="openMenu()">☰</div>
         <ul id="menu">
             <div class="close_btn" onclick="closeMenu()">&times;</div>
-            <li><a class="Item_list" href="/MissionInfo">Mission</a></li>
-            <li><a class="Item_list" href="/Community">Community</a></li>
-            <li><a class="Item_list" href="/Shop">Shop</a></li>
-            <li><a class="Item_list" href="/My_Page">My_Page</a></li>
+            <li><a class="Item_list" href="/Mission">Mission</a></li>
+            <li><a class="Item_list" href="#" onclick="showComingSoon()">Community</a></li>
+            <li><a class="Item_list" href="#" onclick="showComingSoon()">Shop</a></li>
+            <li><a class="Item_list" href="#" onclick="showComingSoon()">My_Page</a></li>
             <a href="/logout" style="text-decoration-line: none">
                 <li id="logout">Logout</li>
             </a>
@@ -491,7 +491,16 @@
         document.getElementById('missionText').innerText = '미션 주제를 선택하세요!';
     }
 });
-
+function showComingSoon() {
+    Swal.fire({
+      icon: 'info',
+      title: '준비 중입니다 😊',
+      text: '해당 기능은 곧 만나보실 수 있어요!',
+      confirmButtonColor: '#397362',
+      background: '#f5f5f5',
+      color: '#3c4d47'
+    });
+  }
 </script>
 <script th:inline="javascript">
     /*<![CDATA[*/
