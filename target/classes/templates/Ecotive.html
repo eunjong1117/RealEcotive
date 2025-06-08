@@ -216,9 +216,9 @@
         <ul id="menu">
             <div class="close_btn" onclick="closeMenu()">&times;</div>
             <li><a class="Item_list" href="/Mission">Mission</a></li>
-            <li><a class="Item_list" href="/Community">Community</a></li>
-            <li><a class="Item_list" href="/Shop">Shop</a></li>
-            <li><a class="Item_list" href="/My_Page">My_Page</a></li>
+            <li><a class="Item_list" href="#" onclick="showComingSoon()">Community</a></li>
+            <li><a class="Item_list" href="#" onclick="showComingSoon()">Shop</a></li>
+            <li><a class="Item_list" href="#" onclick="showComingSoon()">My_Page</a></li>
             <a href="/logout" style="text-decoration-line: none">
                 <li id="logout">Logout</li>
             </a>
@@ -334,7 +334,16 @@
         menu.style.right = "-250px";
       }
     });
-
+    function showComingSoon() {
+    Swal.fire({
+      icon: 'info',
+      title: '준비 중입니다 😊',
+      text: '해당 기능은 곧 만나보실 수 있어요!',
+      confirmButtonColor: '#397362',
+      background: '#f5f5f5',
+      color: '#3c4d47'
+    });
+  }
 </script>
 </body>
 </html>
